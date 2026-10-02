@@ -221,6 +221,40 @@ py manage.py makemigrations --check
 
 The objective of SkillForge is to provide a centralized platform for career preparation by helping users evaluate their current skills, manage projects, analyze job requirements, prepare for interviews, build personalized preparation roadmaps, and track overall career readiness.
 
+## 🖥️ Application Screenshots
+
+### Dashboard
+
+![SkillForge Dashboard](1.png)
+
+### Skills Management
+
+![Skills Management](2.png)
+
+### Project Management
+
+![Project Management](3.png)
+
+### Resume Management
+
+![Resume Management](4.png)
+
+### Job Analysis
+
+![Job Analysis](5.png)
+
+### Career Roadmap
+
+![Career Roadmap](6.png)
+
+### Interview Preparation
+
+![Interview Preparation](7.png)
+
+### Interview Progress
+
+![Interview Progress](8.png)
+
 ## 🔄 How SkillForge Works
 
 1. User creates an account and selects a target role.
