@@ -1,0 +1,374 @@
+{% extends "base.html" %}
+
+{% block title %}Job Analysis | SkillForge{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+    /* =========================================
+       JOB ANALYSIS PAGE
+    ========================================= */
+
+    .job-page {
+        width: 100%;
+        max-width: 1000px;
+        margin: 50px auto;
+    }
+
+
+    /* =========================================
+       PAGE HEADER
+    ========================================= */
+
+    .job-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+
+    .job-header-text h1 {
+        margin: 0;
+        color: #111827;
+        font-size: 36px;
+        line-height: 1.2;
+    }
+
+    .job-subtitle {
+        color: #6b7280;
+        margin-top: 8px;
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+
+    /* =========================================
+       ADD JOB BUTTON
+    ========================================= */
+
+    .add-btn {
+        display: inline-block;
+        background: #4f46e5;
+        color: white;
+        text-decoration: none;
+        padding: 12px 18px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: bold;
+        white-space: nowrap;
+        transition: 0.2s ease;
+    }
+
+    .add-btn:hover {
+        background: #4338ca;
+        color: white;
+    }
+
+
+    /* =========================================
+       JOB LIST
+    ========================================= */
+
+    .job-list {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+
+    /* =========================================
+       JOB CARD
+    ========================================= */
+
+    .job-card {
+        display: block;
+        background: white;
+        padding: 22px 25px;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        text-decoration: none;
+        color: inherit;
+        border: 1px solid transparent;
+        transition: 0.2s ease;
+    }
+
+    .job-card:hover {
+        border-color: #e0e7ff;
+        transform: translateY(-2px);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    }
+
+
+    /* =========================================
+       JOB INFORMATION
+    ========================================= */
+
+    .job-title {
+        font-size: 19px;
+        font-weight: bold;
+        color: #111827;
+        margin-bottom: 6px;
+        line-height: 1.4;
+    }
+
+    .job-date {
+        font-size: 13px;
+        color: #9ca3af;
+    }
+
+
+    /* =========================================
+       JOB CARD ARROW
+    ========================================= */
+
+    .job-card-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .job-arrow {
+        color: #4f46e5;
+        font-size: 20px;
+        font-weight: bold;
+        flex-shrink: 0;
+        transition: 0.2s ease;
+    }
+
+    .job-card:hover .job-arrow {
+        transform: translateX(4px);
+    }
+
+
+    /* =========================================
+       EMPTY STATE
+    ========================================= */
+
+    .empty {
+        background: white;
+        padding: 55px 30px;
+        text-align: center;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .empty h2 {
+        color: #111827;
+        font-size: 21px;
+        margin-bottom: 10px;
+    }
+
+    .empty p {
+        color: #6b7280;
+        font-size: 14px;
+        line-height: 1.6;
+    }
+
+
+    /* =========================================
+       RESPONSIVE - TABLET
+    ========================================= */
+
+    @media (max-width: 900px) {
+
+        .job-page {
+            width: 92%;
+            margin: 35px auto;
+        }
+
+        .job-header-text h1 {
+            font-size: 32px;
+        }
+
+        .job-header {
+            gap: 20px;
+        }
+
+        .job-card {
+            padding: 20px;
+        }
+    }
+
+
+    /* =========================================
+       RESPONSIVE - MOBILE
+    ========================================= */
+
+    @media (max-width: 650px) {
+
+        .job-page {
+            width: 94%;
+            margin: 25px auto;
+        }
+
+        .job-header {
+            flex-direction: column;
+            gap: 18px;
+            margin-bottom: 25px;
+        }
+
+        .job-header-text h1 {
+            font-size: 28px;
+        }
+
+        .job-subtitle {
+            font-size: 14px;
+        }
+
+        .add-btn {
+            width: 100%;
+            text-align: center;
+        }
+
+        .job-card {
+            padding: 18px;
+        }
+
+        .job-title {
+            font-size: 17px;
+        }
+
+        .job-card-content {
+            gap: 12px;
+        }
+
+        .job-arrow {
+            font-size: 18px;
+        }
+
+        .empty {
+            padding: 40px 20px;
+        }
+    }
+
+
+    /* =========================================
+       RESPONSIVE - SMALL MOBILE
+    ========================================= */
+
+    @media (max-width: 400px) {
+
+        .job-page {
+            width: 95%;
+        }
+
+        .job-header-text h1 {
+            font-size: 25px;
+        }
+
+        .job-card {
+            padding: 16px;
+        }
+
+        .job-card-content {
+            align-items: flex-start;
+        }
+
+        .job-arrow {
+            margin-top: 2px;
+        }
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="job-page">
+
+
+    <!-- =====================================
+         PAGE HEADER
+    ====================================== -->
+
+    <div class="job-header">
+
+        <div class="job-header-text">
+
+            <h1>
+                Job Analysis
+            </h1>
+
+            <p class="job-subtitle">
+                Paste a job description to see what it requires.
+            </p>
+
+        </div>
+
+
+        <a
+            href="{% url 'jobs:add_job' %}"
+            class="add-btn"
+        >
+            + Add Job Description
+        </a>
+
+    </div>
+
+
+    <!-- =====================================
+         JOB LIST
+    ====================================== -->
+
+    {% if jobs %}
+
+        <div class="job-list">
+
+            {% for job in jobs %}
+
+                <a
+                    href="{% url 'jobs:job_detail' job.id %}"
+                    class="job-card"
+                >
+
+                    <div class="job-card-content">
+
+                        <div>
+
+                            <div class="job-title">
+                                {{ job.job_title }}
+                            </div>
+
+                            <div class="job-date">
+                                Added {{ job.created_at|date:"M d, Y" }}
+                            </div>
+
+                        </div>
+
+                        <div class="job-arrow">
+                            →
+                        </div>
+
+                    </div>
+
+                </a>
+
+            {% endfor %}
+
+        </div>
+
+    {% else %}
+
+        <div class="empty">
+
+            <h2>
+                No job descriptions yet
+            </h2>
+
+            <p>
+                Add one to see required and preferred skills.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+
+</div>
+
+{% endblock %}

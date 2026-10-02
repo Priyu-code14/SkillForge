@@ -1,0 +1,679 @@
+{% extends "base.html" %}
+
+{% block title %}
+Readiness | {{ job.job_title }} | SkillForge
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+    .readiness-page {
+        width: 100%;
+    }
+
+
+    /* =========================
+       HEADER
+    ========================= */
+
+    .readiness-header {
+        margin-bottom: 30px;
+    }
+
+    .readiness-header h1 {
+        font-size: 32px;
+        font-weight: 700;
+        color: #111827;
+        margin-bottom: 7px;
+    }
+
+    .readiness-header p {
+        color: #64748b;
+        margin: 0;
+    }
+
+
+    /* =========================
+       OVERALL SCORE
+    ========================= */
+
+    .overall-card {
+        background: white;
+        padding: 32px;
+        border-radius: 16px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        text-align: center;
+        margin-bottom: 25px;
+    }
+
+    .overall-label {
+        color: #64748b;
+        font-size: 14px;
+        margin-bottom: 8px;
+    }
+
+    .overall-score {
+        font-size: 48px;
+        font-weight: 700;
+        color: #4f46e5;
+    }
+
+    .overall-description {
+        color: #64748b;
+        font-size: 14px;
+        margin-top: 6px;
+    }
+
+
+    /* =========================
+       SCORE GRID
+    ========================= */
+
+    .score-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 18px;
+        margin-bottom: 25px;
+    }
+
+    .score-card {
+        background: white;
+        padding: 22px;
+        border-radius: 14px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+    }
+
+    .score-title {
+        color: #64748b;
+        font-size: 14px;
+        margin-bottom: 10px;
+    }
+
+    .score-value {
+        font-size: 27px;
+        font-weight: 700;
+        color: #111827;
+    }
+
+    .score-note {
+        color: #94a3b8;
+        font-size: 12px;
+        margin-top: 5px;
+    }
+
+    .progress-track {
+        width: 100%;
+        height: 7px;
+        background: #e5e7eb;
+        border-radius: 10px;
+        overflow: hidden;
+        margin-top: 12px;
+    }
+
+    .progress-fill {
+        height: 100%;
+        background: #4f46e5;
+        border-radius: 10px;
+    }
+
+
+    /* =========================
+       SECTIONS
+    ========================= */
+
+    .section-card {
+        background: white;
+        padding: 25px;
+        border-radius: 14px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        margin-bottom: 20px;
+    }
+
+    .section-card h2 {
+        font-size: 19px;
+        color: #111827;
+        margin-bottom: 18px;
+    }
+
+
+    /* =========================
+       ROWS
+    ========================= */
+
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #f1f5f9;
+        color: #475569;
+        font-size: 14px;
+    }
+
+    .info-row:last-child {
+        border-bottom: none;
+    }
+
+    .info-value {
+        font-weight: 700;
+        color: #111827;
+    }
+
+
+    /* =========================
+       INTERVIEW
+    ========================= */
+
+    .interview-highlight {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 15px;
+    }
+
+    .interview-box {
+        background: #f8fafc;
+        border: 1px solid #eef0f3;
+        padding: 18px;
+        border-radius: 12px;
+    }
+
+    .interview-label {
+        color: #64748b;
+        font-size: 13px;
+        margin-bottom: 7px;
+    }
+
+    .interview-value {
+        color: #111827;
+        font-size: 24px;
+        font-weight: 700;
+    }
+
+    .interview-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        margin-top: 18px;
+        background: #4f46e5;
+        color: white;
+        text-decoration: none;
+        padding: 10px 16px;
+        border-radius: 8px;
+        font-size: 13px;
+        font-weight: 600;
+    }
+
+    .interview-link:hover {
+        background: #4338ca;
+        color: white;
+    }
+
+
+    /* =========================
+       PROJECTS
+    ========================= */
+
+    .project-item {
+        padding: 10px 0;
+        border-bottom: 1px solid #f1f5f9;
+        color: #374151;
+        font-size: 14px;
+    }
+
+    .project-item:last-child {
+        border-bottom: none;
+    }
+
+
+    /* =========================
+       PORTFOLIO
+    ========================= */
+
+    .not-tracked {
+        background: #f8fafc;
+        border: 1px dashed #cbd5e1;
+        padding: 16px;
+        border-radius: 10px;
+        color: #64748b;
+        font-size: 14px;
+    }
+
+
+    /* =========================
+       BACK
+    ========================= */
+
+    .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        color: #4f46e5;
+        text-decoration: none;
+        font-weight: 600;
+        margin-top: 5px;
+    }
+
+    .back-link:hover {
+        text-decoration: underline;
+    }
+
+
+    /* =========================
+       RESPONSIVE
+    ========================= */
+
+    @media (max-width: 1000px) {
+
+        .score-grid {
+            grid-template-columns: repeat(2, 1fr);
+        }
+
+    }
+
+
+    @media (max-width: 650px) {
+
+        .readiness-header h1 {
+            font-size: 26px;
+        }
+
+        .overall-score {
+            font-size: 40px;
+        }
+
+        .score-grid {
+            grid-template-columns: 1fr;
+        }
+
+        .interview-highlight {
+            grid-template-columns: 1fr;
+        }
+
+        .section-card {
+            padding: 20px;
+        }
+
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="readiness-page">
+
+
+    <!-- HEADER -->
+
+    <div class="readiness-header">
+
+        <h1>
+            Career Readiness
+        </h1>
+
+        <p>
+            {{ job.job_title }} — preparation analysis
+        </p>
+
+    </div>
+
+
+    <!-- OVERALL SCORE -->
+
+    <div class="overall-card">
+
+        <div class="overall-label">
+            OVERALL READINESS
+        </div>
+
+        <div class="overall-score">
+            {{ snapshot.total_score }}%
+        </div>
+
+        <div class="overall-description">
+            Based on your skills, project evidence and interview preparation.
+        </div>
+
+    </div>
+
+
+    <!-- SCORE CARDS -->
+
+    <div class="score-grid">
+
+
+        <!-- SKILLS -->
+
+        <div class="score-card">
+
+            <div class="score-title">
+                Skill Score
+            </div>
+
+            <div class="score-value">
+                {{ snapshot.skill_score }}%
+            </div>
+
+            <div class="progress-track">
+
+                <div
+                    class="progress-fill"
+                    style="width: {{ snapshot.skill_score }}%;"
+                ></div>
+
+            </div>
+
+            <div class="score-note">
+                Required skill matching
+            </div>
+
+        </div>
+
+
+        <!-- PROJECTS -->
+
+        <div class="score-card">
+
+            <div class="score-title">
+                Project Score
+            </div>
+
+            <div class="score-value">
+                {{ snapshot.project_score }}%
+            </div>
+
+            <div class="progress-track">
+
+                <div
+                    class="progress-fill"
+                    style="width: {{ snapshot.project_score }}%;"
+                ></div>
+
+            </div>
+
+            <div class="score-note">
+                Project evidence
+            </div>
+
+        </div>
+
+
+        <!-- INTERVIEW -->
+
+        <div class="score-card">
+
+            <div class="score-title">
+                Interview Score
+            </div>
+
+            <div class="score-value">
+                {{ snapshot.interview_score }}%
+            </div>
+
+            <div class="progress-track">
+
+                <div
+                    class="progress-fill"
+                    style="width: {{ snapshot.interview_score }}%;"
+                ></div>
+
+            </div>
+
+            <div class="score-note">
+                Based on confidence
+            </div>
+
+        </div>
+
+
+        <!-- PORTFOLIO -->
+
+        <div class="score-card">
+
+            <div class="score-title">
+                Resume / Portfolio
+            </div>
+
+        <div class="score-value">
+            {{ snapshot.portfolio_score }}%
+        </div>
+
+        <div class="progress-track">
+
+        <div
+            class="progress-fill"
+            style="width: {{ snapshot.portfolio_score }}%;"
+        ></div>
+
+        </div>
+
+    <div class="score-note">
+        Required skills found in your resume
+    </div>
+
+</div>
+
+
+    <!-- INTERVIEW PREPARATION -->
+
+    <div class="section-card">
+
+        <h2>
+            <i class="bi bi-mic"></i>
+            Interview Preparation
+        </h2>
+
+
+        <div class="interview-highlight">
+
+
+            <div class="interview-box">
+
+                <div class="interview-label">
+                    Questions Practiced
+                </div>
+
+                <div class="interview-value">
+                    {{ interview_count }}
+                </div>
+
+            </div>
+
+
+            <div class="interview-box">
+
+                <div class="interview-label">
+                    Average Confidence
+                </div>
+
+                <div class="interview-value">
+
+                    {% if average_confidence %}
+                        {{ average_confidence }}/5
+                    {% else %}
+                        —
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <a
+            href="{% url 'interviews:interview_progress' %}"
+            class="interview-link"
+        >
+
+            <i class="bi bi-graph-up"></i>
+
+            View Interview Progress
+
+        </a>
+
+    </div>
+
+
+    <!-- SKILL BREAKDOWN -->
+
+    <div class="section-card">
+
+        <h2>
+            <i class="bi bi-bar-chart"></i>
+            Required Skill Breakdown
+        </h2>
+
+
+        <div class="info-row">
+
+            <span>Matched</span>
+
+            <span class="info-value">
+                {{ matched_count }}
+            </span>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <span>Partial</span>
+
+            <span class="info-value">
+                {{ partial_count }}
+            </span>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <span>Missing</span>
+
+            <span class="info-value">
+                {{ missing_count }}
+            </span>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <span>Total Required</span>
+
+            <span class="info-value">
+                {{ total_required }}
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- PROJECT EVIDENCE -->
+
+    <div class="section-card">
+
+        <h2>
+            <i class="bi bi-folder"></i>
+            Project Evidence
+        </h2>
+
+
+        <div class="info-row">
+
+            <span>Relevant Projects</span>
+
+            <span class="info-value">
+                {{ relevant_projects.count }}
+            </span>
+
+        </div>
+
+
+        <div class="info-row">
+
+            <span>
+                Skills With No Project Experience
+            </span>
+
+            <span class="info-value">
+                {{ missing_project_experience }}
+            </span>
+
+        </div>
+
+
+        {% if relevant_projects %}
+
+            <div style="margin-top: 15px;">
+
+                {% for project in relevant_projects %}
+
+                    <div class="project-item">
+
+                        <i class="bi bi-folder2-open"></i>
+
+                        {{ project.name }}
+
+                    </div>
+
+                {% endfor %}
+
+            </div>
+
+        {% else %}
+
+            <p class="text-muted mb-0" style="margin-top: 15px;">
+
+                No existing projects demonstrate this job's
+                required skills yet.
+
+            </p>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- PORTFOLIO -->
+
+    <div class="section-card">
+
+        <h2>
+            <i class="bi bi-person-badge"></i>
+            Portfolio
+        </h2>
+
+        <div class="not-tracked">
+
+            Portfolio scoring is not implemented yet.
+            This section will be included in Readiness in a future phase.
+
+        </div>
+
+    </div>
+
+
+    <!-- BACK -->
+
+    <a
+        href="{% url 'jobs:job_detail' job.id %}"
+        class="back-link"
+    >
+
+        <i class="bi bi-arrow-left"></i>
+
+        ← Back to Job Description
+
+    </a>
+
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Job Description | SkillForge</title>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            padding: 40px 0;
+        }
+
+        .card {
+            width: 560px;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+        }
+
+        h1 { text-align: center; color: #111827; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: #6b7280; margin-bottom: 30px; }
+
+        .form-group { margin-bottom: 20px; }
+
+        label { display: block; margin-bottom: 7px; font-weight: bold; color: #374151; }
+
+        input, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            font-size: 15px;
+            font-family: Arial, sans-serif;
+        }
+
+        textarea { resize: vertical; min-height: 220px; }
+
+        input:focus, textarea:focus { outline: none; border-color: #4f46e5; }
+
+        .hint { color: #9ca3af; font-size: 12px; margin-top: 5px; }
+
+        .btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 7px;
+            background: #4f46e5;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .btn:hover { background: #4338ca; }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #4f46e5;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Add Job Description</h1>
+    <p class="subtitle">Paste the job title and full description below.</p>
+
+    <form method="POST">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="job_title">Job Title</label>
+            <input type="text" name="job_title" id="job_title" required>
+        </div>
+
+        <div class="form-group">
+            <label for="raw_description">Job Description</label>
+            <textarea name="raw_description" id="raw_description" required></textarea>
+            <p class="hint">Include the full requirements section for the most accurate skill extraction.</p>
+        </div>
+
+        <button type="submit" class="btn">Analyze Job Description</button>
+    </form>
+
+    <a href="{% url 'jobs:job_list' %}" class="back">← Back to Job Analysis</a>
+</div>
+
+</body>
+</html>

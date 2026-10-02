@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Edit Project | SkillForge</title>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            padding: 40px 0;
+        }
+
+        .card {
+            width: 520px;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 { text-align: center; color: #111827; margin-bottom: 10px; }
+        .subtitle { text-align: center; color: #6b7280; margin-bottom: 30px; }
+
+        .form-group { margin-bottom: 20px; }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            font-size: 15px;
+            background: white;
+            font-family: Arial, sans-serif;
+        }
+
+        textarea { resize: vertical; min-height: 90px; }
+        select[multiple] { min-height: 110px; }
+
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #4f46e5;
+        }
+
+        .row { display: flex; gap: 15px; }
+        .row .form-group { flex: 1; }
+
+        .hint { color: #9ca3af; font-size: 12px; margin-top: 5px; }
+
+        .btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 7px;
+            background: #4f46e5;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn:hover { background: #4338ca; }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #4f46e5;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h1>Edit Project</h1>
+    <p class="subtitle">Update your project details.</p>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="name">Project Name</label>
+            <input type="text" name="name" id="name" value="{{ project.name }}" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">Description</label>
+            <textarea name="description" id="description" required>{{ project.description }}</textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="technologies">Technologies</label>
+            <input type="text" name="technologies" id="technologies" value="{{ project.technologies }}">
+            <p class="hint">Comma-separated list.</p>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <label for="github_url">GitHub URL</label>
+                <input type="url" name="github_url" id="github_url" value="{{ project.github_url }}">
+            </div>
+
+            <div class="form-group">
+                <label for="live_url">Live URL</label>
+                <input type="url" name="live_url" id="live_url" value="{{ project.live_url }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="status">Status</label>
+            <select name="status" id="status" required>
+                <option value="Planning" {% if project.status == "Planning" %}selected{% endif %}>Planning</option>
+                <option value="In Progress" {% if project.status == "In Progress" %}selected{% endif %}>In Progress</option>
+                <option value="Completed" {% if project.status == "Completed" %}selected{% endif %}>Completed</option>
+            </select>
+        </div>
+
+        <div class="row">
+            <div class="form-group">
+                <label for="start_date">Start Date</label>
+                <input type="date" name="start_date" id="start_date" value="{{ project.start_date|date:'Y-m-d' }}">
+            </div>
+
+            <div class="form-group">
+                <label for="end_date">End Date</label>
+                <input type="date" name="end_date" id="end_date" value="{{ project.end_date|date:'Y-m-d' }}">
+            </div>
+        </div>
+
+        <div class="form-group">
+            <label for="skills">Skills Used</label>
+            <select name="skills" id="skills" multiple>
+                {% for skill in skills %}
+                    <option value="{{ skill.id }}" {% if skill.id in selected_skill_ids %}selected{% endif %}>{{ skill.name }}</option>
+                {% endfor %}
+            </select>
+            <p class="hint">Hold Ctrl (Cmd on Mac) to select multiple.</p>
+        </div>
+
+        <button type="submit" class="btn">Save Changes</button>
+
+    </form>
+
+    <a href="{% url 'projects:project_detail' project.id %}" class="back">← Cancel</a>
+
+</div>
+
+</body>
+</html>

@@ -1,0 +1,686 @@
+{% extends "base.html" %}
+
+{% block title %}Roadmap | {{ job.job_title }} | SkillForge{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+    /* =========================================
+       ROADMAP PAGE
+    ========================================= */
+
+    .roadmap-page {
+        width: 100%;
+        max-width: 1000px;
+        margin: 50px auto;
+    }
+
+
+    /* =========================================
+       PAGE HEADER
+    ========================================= */
+
+    .roadmap-header {
+        margin-bottom: 30px;
+    }
+
+    .roadmap-header h1 {
+        color: #111827;
+        font-size: 36px;
+        line-height: 1.2;
+        margin: 0 0 8px;
+    }
+
+    .roadmap-subtitle {
+        color: #6b7280;
+        font-size: 16px;
+        line-height: 1.6;
+    }
+
+
+    /* =========================================
+       PROGRESS CARD
+    ========================================= */
+
+    .progress-card {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        margin-bottom: 20px;
+    }
+
+    .progress-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: baseline;
+        gap: 15px;
+        margin-bottom: 12px;
+    }
+
+    .progress-num {
+        font-size: 30px;
+        font-weight: bold;
+        color: #4f46e5;
+    }
+
+    .progress-detail {
+        color: #6b7280;
+        font-size: 14px;
+    }
+
+    .bar-track {
+        width: 100%;
+        height: 10px;
+        background: #e5e7eb;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .bar-fill {
+        height: 100%;
+        background: #4f46e5;
+        border-radius: 10px;
+        transition: width 0.3s ease;
+    }
+
+    .next-step {
+        margin-top: 15px;
+        font-size: 14px;
+        color: #4f46e5;
+        background: #eef2ff;
+        padding: 11px 14px;
+        border-radius: 7px;
+        line-height: 1.5;
+    }
+
+
+    /* =========================================
+       ROADMAP SECTIONS
+    ========================================= */
+
+    .section {
+        background: white;
+        padding: 25px;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        margin-bottom: 20px;
+    }
+
+    .section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 12px;
+    }
+
+    .section-head h2 {
+        color: #111827;
+        font-size: 19px;
+        margin: 0;
+    }
+
+
+    /* =========================================
+       PRIORITY
+    ========================================= */
+
+    .priority {
+        font-size: 12px;
+        font-weight: bold;
+        padding: 5px 10px;
+        border-radius: 20px;
+        white-space: nowrap;
+    }
+
+    .priority-High {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+
+    .priority-Medium {
+        background: #fef3c7;
+        color: #b45309;
+    }
+
+    .priority-Low {
+        background: #f3f4f6;
+        color: #374151;
+    }
+
+
+    /* =========================================
+       GOALS
+    ========================================= */
+
+    .goal {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        padding: 15px 0;
+        border-bottom: 1px solid #f3f4f6;
+    }
+
+    .goal:last-child {
+        border-bottom: none;
+    }
+
+    .goal-info {
+        min-width: 0;
+        flex: 1;
+    }
+
+    .goal-title {
+        font-weight: bold;
+        color: #111827;
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+    .goal-title.done {
+        text-decoration: line-through;
+        color: #9ca3af;
+    }
+
+    .goal-desc {
+        font-size: 13px;
+        color: #6b7280;
+        margin-top: 5px;
+        line-height: 1.6;
+    }
+
+
+    /* =========================================
+       PHASE TAG
+    ========================================= */
+
+    .phase-tag {
+        display: inline-block;
+        font-size: 11px;
+        font-weight: bold;
+        color: #4f46e5;
+        background: #eef2ff;
+        padding: 3px 8px;
+        border-radius: 10px;
+        margin-right: 7px;
+        vertical-align: middle;
+    }
+
+
+    /* =========================================
+       STATUS FORM
+    ========================================= */
+
+    .status-form {
+        display: flex;
+        align-items: center;
+        gap: 7px;
+        flex-shrink: 0;
+    }
+
+    .status-form select {
+        padding: 7px 9px;
+        font-size: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        background: white;
+        color: #374151;
+    }
+
+    .status-form button {
+        background: #f3f4f6;
+        color: #374151;
+        border: none;
+        padding: 7px 11px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s ease;
+    }
+
+    .status-form button:hover {
+        background: #e5e7eb;
+    }
+
+
+    /* =========================================
+       ACTION BUTTON
+    ========================================= */
+
+    .generate-form {
+        margin-bottom: 15px;
+    }
+
+    .generate-btn {
+        background: #4f46e5;
+        color: white;
+        border: none;
+        padding: 12px 18px;
+        border-radius: 8px;
+        font-weight: bold;
+        font-size: 14px;
+        cursor: pointer;
+        transition: 0.2s ease;
+    }
+
+    .generate-btn:hover {
+        background: #4338ca;
+    }
+
+
+    /* =========================================
+       EMPTY STATE
+    ========================================= */
+
+    .empty {
+        background: white;
+        padding: 50px 30px;
+        text-align: center;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        margin-bottom: 20px;
+    }
+
+    .empty h2 {
+        color: #111827;
+        font-size: 21px;
+        margin-bottom: 10px;
+    }
+
+    .empty p {
+        color: #6b7280;
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 20px;
+    }
+
+
+    /* =========================================
+       BACK LINK
+    ========================================= */
+
+    .back {
+        display: inline-block;
+        margin-top: 5px;
+        color: #4f46e5;
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .back:hover {
+        color: #4338ca;
+        text-decoration: underline;
+    }
+
+
+    /* =========================================
+       TABLET
+    ========================================= */
+
+    @media (max-width: 900px) {
+
+        .roadmap-page {
+            width: 92%;
+            margin: 35px auto;
+        }
+
+        .roadmap-header h1 {
+            font-size: 32px;
+        }
+
+        .section,
+        .progress-card {
+            padding: 22px;
+        }
+    }
+
+
+    /* =========================================
+       MOBILE
+    ========================================= */
+
+    @media (max-width: 650px) {
+
+        .roadmap-page {
+            width: 94%;
+            margin: 25px auto;
+        }
+
+        .roadmap-header h1 {
+            font-size: 28px;
+        }
+
+        .roadmap-subtitle {
+            font-size: 14px;
+        }
+
+        .progress-card,
+        .section {
+            padding: 18px;
+            border-radius: 10px;
+        }
+
+        .progress-top {
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 3px;
+        }
+
+        .progress-num {
+            font-size: 26px;
+        }
+
+        .section-head {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .goal {
+            flex-direction: column;
+            align-items: stretch;
+            gap: 12px;
+        }
+
+        .status-form {
+            width: 100%;
+        }
+
+        .status-form select {
+            flex: 1;
+        }
+
+        .status-form button {
+            padding-left: 14px;
+            padding-right: 14px;
+        }
+
+        .generate-btn {
+            width: 100%;
+        }
+
+        .empty {
+            padding: 40px 20px;
+        }
+    }
+
+
+    /* =========================================
+       SMALL MOBILE
+    ========================================= */
+
+    @media (max-width: 400px) {
+
+        .roadmap-page {
+            width: 95%;
+        }
+
+        .roadmap-header h1 {
+            font-size: 25px;
+        }
+
+        .progress-card,
+        .section {
+            padding: 15px;
+        }
+
+        .phase-tag {
+            display: block;
+            width: fit-content;
+            margin-bottom: 5px;
+        }
+
+        .status-form {
+            flex-direction: column;
+            align-items: stretch;
+        }
+
+        .status-form select,
+        .status-form button {
+            width: 100%;
+        }
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="roadmap-page">
+
+
+    <!-- =====================================
+         PAGE HEADER
+    ====================================== -->
+
+    <div class="roadmap-header">
+
+        <h1>
+            Roadmap: {{ job.job_title }}
+        </h1>
+
+        <p class="roadmap-subtitle">
+            Steps for the required skills you are Missing or only Partial in.
+        </p>
+
+    </div>
+
+
+    {% if total %}
+
+
+    <!-- =====================================
+         PROGRESS
+    ====================================== -->
+
+    <div class="progress-card">
+
+        <div class="progress-top">
+
+            <div class="progress-num">
+                {{ progress }}%
+            </div>
+
+            <div class="progress-detail">
+                {{ completed }} of {{ total }} steps completed
+            </div>
+
+        </div>
+
+
+        <div class="bar-track">
+
+            <div
+                class="bar-fill"
+                style="width: {{ progress }}%;"
+            ></div>
+
+        </div>
+
+
+        {% if next_goal %}
+
+        <div class="next-step">
+            Next: {{ next_goal.title }}
+        </div>
+
+        {% else %}
+
+        <div class="next-step">
+            All steps completed.
+        </div>
+
+        {% endif %}
+
+    </div>
+
+
+    <!-- =====================================
+         ROADMAP GROUPS
+    ====================================== -->
+
+    {% for group in groups %}
+
+    <div class="section">
+
+        <div class="section-head">
+
+            <h2>
+                {{ group.name }}
+            </h2>
+
+            <span class="priority priority-{{ group.priority }}">
+                {{ group.priority }} priority
+            </span>
+
+        </div>
+
+
+        {% for goal in group.goals %}
+
+        <div class="goal">
+
+
+            <div class="goal-info">
+
+                <div class="goal-title {% if goal.status == 'Completed' %}done{% endif %}">
+
+                    <span class="phase-tag">
+                        {{ goal.phase }}
+                    </span>
+
+                    {{ goal.title }}
+
+                </div>
+
+
+                {% if goal.description %}
+
+                <div class="goal-desc">
+                    {{ goal.description }}
+                </div>
+
+                {% endif %}
+
+            </div>
+
+
+            <!-- STATUS -->
+
+            <form
+                method="POST"
+                action="{% url 'roadmap:update_goal_status' goal.id %}"
+                class="status-form"
+            >
+
+                {% csrf_token %}
+
+                <select name="status">
+
+                    {% for s in status_choices %}
+
+                    <option
+                        value="{{ s }}"
+                        {% if goal.status == s %}selected{% endif %}
+                    >
+                        {{ s }}
+                    </option>
+
+                    {% endfor %}
+
+                </select>
+
+
+                <button type="submit">
+                    Save
+                </button>
+
+            </form>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% endfor %}
+
+
+    <!-- =====================================
+         UPDATE ROADMAP
+    ====================================== -->
+
+    <form
+        method="POST"
+        action="{% url 'roadmap:generate_roadmap' job.id %}"
+        class="generate-form"
+    >
+
+        {% csrf_token %}
+
+        <button type="submit" class="generate-btn">
+            Update Roadmap
+        </button>
+
+    </form>
+
+
+    {% else %}
+
+
+    <!-- =====================================
+         EMPTY ROADMAP
+    ====================================== -->
+
+    <div class="empty">
+
+        <h2>
+            No roadmap yet
+        </h2>
+
+        <p>
+            Generate steps for the required skills this job needs
+            that you are missing or only partly have.
+        </p>
+
+
+        <form
+            method="POST"
+            action="{% url 'roadmap:generate_roadmap' job.id %}"
+        >
+
+            {% csrf_token %}
+
+            <button type="submit" class="generate-btn">
+                Generate Roadmap
+            </button>
+
+        </form>
+
+    </div>
+
+
+    {% endif %}
+
+
+    <!-- =====================================
+         BACK TO JOB
+    ====================================== -->
+
+    <a
+        href="{% url 'jobs:job_detail' job.id %}"
+        class="back"
+    >
+        ← Back to Job Description
+    </a>
+
+
+</div>
+
+{% endblock %}

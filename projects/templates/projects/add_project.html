@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Project | SkillForge</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            padding: 30px 15px;
+            overflow-x: hidden;
+        }
+
+        .card {
+            width: 100%;
+            max-width: 520px;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: #111827;
+            margin-bottom: 10px;
+            font-size: 30px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 30px;
+            line-height: 1.5;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            max-width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            font-size: 15px;
+            background: white;
+            font-family: Arial, sans-serif;
+        }
+
+        input,
+        select {
+            height: 46px;
+        }
+
+        textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        select[multiple] {
+            min-height: 120px;
+            height: auto;
+        }
+
+        input:focus,
+        select:focus,
+        textarea:focus {
+            outline: none;
+            border-color: #4f46e5;
+            box-shadow: 0 0 0 2px rgba(79, 70, 229, 0.08);
+        }
+
+        /* TWO-COLUMN FORM ROW */
+
+        .row {
+            display: flex;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .row .form-group {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .hint {
+            color: #9ca3af;
+            font-size: 12px;
+            margin-top: 5px;
+            line-height: 1.4;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 7px;
+            background: #4f46e5;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #4338ca;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #4f46e5;
+            text-decoration: none;
+            font-weight: bold;
+            line-height: 1.5;
+        }
+
+        .back:hover {
+            text-decoration: underline;
+        }
+
+
+        /* =========================================
+           TABLET
+        ========================================= */
+
+        @media (max-width: 600px) {
+
+            body {
+                padding: 20px 12px;
+                align-items: flex-start;
+            }
+
+            .card {
+                max-width: 100%;
+                padding: 28px 22px;
+                border-radius: 10px;
+            }
+
+            h1 {
+                font-size: 26px;
+            }
+
+            .subtitle {
+                font-size: 14px;
+                margin-bottom: 25px;
+            }
+
+            .row {
+                flex-direction: column;
+                gap: 0;
+            }
+
+            .row .form-group {
+                width: 100%;
+            }
+
+            input,
+            select,
+            textarea {
+                font-size: 16px;
+            }
+        }
+
+
+        /* =========================================
+           SMALL MOBILE
+        ========================================= */
+
+        @media (max-width: 400px) {
+
+            body {
+                padding: 15px 10px;
+            }
+
+            .card {
+                padding: 24px 16px;
+            }
+
+            h1 {
+                font-size: 23px;
+            }
+
+            .subtitle {
+                font-size: 13px;
+                margin-bottom: 22px;
+            }
+
+            .form-group {
+                margin-bottom: 17px;
+            }
+
+            label {
+                font-size: 14px;
+            }
+
+            input,
+            select,
+            textarea {
+                padding: 11px;
+                font-size: 16px;
+            }
+
+            select[multiple] {
+                min-height: 110px;
+            }
+
+            .btn {
+                font-size: 15px;
+                padding: 12px;
+            }
+
+            .back {
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h1>Add Project</h1>
+
+    <p class="subtitle">
+        Add a project to demonstrate your skills.
+    </p>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="name">Project Name</label>
+
+            <input
+                type="text"
+                name="name"
+                id="name"
+                value="{{ prefill.name }}"
+                required
+            >
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="description">
+                Description
+            </label>
+
+            <textarea
+                name="description"
+                id="description"
+                required
+            >{{ prefill.description }}</textarea>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="technologies">
+                Technologies
+            </label>
+
+            <input
+                type="text"
+                name="technologies"
+                id="technologies"
+                value="{{ prefill.technologies }}"
+                placeholder="Python, Django, MySQL"
+            >
+
+            <p class="hint">
+                Comma-separated list.
+            </p>
+
+        </div>
+
+
+        <!-- GITHUB + LIVE URL -->
+
+        <div class="row">
+
+            <div class="form-group">
+
+                <label for="github_url">
+                    GitHub URL
+                </label>
+
+                <input
+                    type="url"
+                    name="github_url"
+                    id="github_url"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="live_url">
+                    Live URL
+                </label>
+
+                <input
+                    type="url"
+                    name="live_url"
+                    id="live_url"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="status">
+                Status
+            </label>
+
+            <select
+                name="status"
+                id="status"
+                required
+            >
+
+                <option value="Planning">
+                    Planning
+                </option>
+
+                <option value="In Progress">
+                    In Progress
+                </option>
+
+                <option value="Completed">
+                    Completed
+                </option>
+
+            </select>
+
+        </div>
+
+
+        <!-- START + END DATE -->
+
+        <div class="row">
+
+            <div class="form-group">
+
+                <label for="start_date">
+                    Start Date
+                </label>
+
+                <input
+                    type="date"
+                    name="start_date"
+                    id="start_date"
+                >
+
+            </div>
+
+
+            <div class="form-group">
+
+                <label for="end_date">
+                    End Date
+                </label>
+
+                <input
+                    type="date"
+                    name="end_date"
+                    id="end_date"
+                >
+
+            </div>
+
+        </div>
+
+
+        <div class="form-group">
+
+            <label for="skills">
+                Skills Used
+            </label>
+
+            <select
+                name="skills"
+                id="skills"
+                multiple
+            >
+
+                {% for skill in skills %}
+
+                    <option value="{{ skill.id }}">
+                        {{ skill.name }}
+                    </option>
+
+                {% endfor %}
+
+            </select>
+
+            <p class="hint">
+                Hold Ctrl (Cmd on Mac) to select multiple.
+            </p>
+
+        </div>
+
+
+        <button
+            type="submit"
+            class="btn"
+        >
+            Save Project
+        </button>
+
+    </form>
+
+
+    <a
+        href="{% url 'projects:project_list' %}"
+        class="back"
+    >
+        ← Back to My Projects
+    </a>
+
+</div>
+
+</body>
+</html>

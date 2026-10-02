@@ -1,0 +1,568 @@
+{% extends "base.html" %}
+
+{% block title %}
+{{ job.job_title }} | SkillForge
+{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================
+   JOB DETAIL PAGE
+========================================= */
+
+.job-page {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 35px 20px 60px;
+}
+
+/* =========================================
+   HEADER CARD
+========================================= */
+
+.job-header-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    padding: 32px;
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.06);
+    margin-bottom: 22px;
+}
+
+.job-header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 20px;
+}
+
+.job-title-area {
+    flex: 1;
+}
+
+.job-title-area h1 {
+    margin: 0 0 8px;
+    color: #111827;
+    font-size: 32px;
+    line-height: 1.25;
+    font-weight: 700;
+}
+
+.job-date {
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+/* =========================================
+   SKILLS
+========================================= */
+
+.skill-section {
+    margin-top: 28px;
+}
+
+.skill-section h2 {
+    margin: 0 0 12px;
+    color: #111827;
+    font-size: 16px;
+    font-weight: 700;
+}
+
+.skill-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.skill-tag {
+    display: inline-flex;
+    align-items: center;
+    padding: 7px 12px;
+    border-radius: 20px;
+    background: #eef2ff;
+    color: #4338ca;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.preferred-tag {
+    background: #f0fdf4;
+    color: #15803d;
+}
+
+.no-skills {
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+/* =========================================
+   DESCRIPTION
+========================================= */
+
+.description-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    padding: 26px 30px;
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.05);
+    margin-bottom: 22px;
+}
+
+.description-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    margin-bottom: 16px;
+}
+
+.description-header h2 {
+    margin: 0;
+    color: #111827;
+    font-size: 19px;
+}
+
+.description-label {
+    color: #64748b;
+    font-size: 12px;
+    background: #f1f5f9;
+    padding: 5px 9px;
+    border-radius: 20px;
+}
+
+.job-description {
+    color: #475569;
+    font-size: 14px;
+    line-height: 1.8;
+    white-space: pre-wrap;
+    max-height: 420px;
+    overflow-y: auto;
+    padding-right: 8px;
+}
+
+/* Scrollbar */
+
+.job-description::-webkit-scrollbar {
+    width: 6px;
+}
+
+.job-description::-webkit-scrollbar-track {
+    background: #f8fafc;
+    border-radius: 10px;
+}
+
+.job-description::-webkit-scrollbar-thumb {
+    background: #cbd5e1;
+    border-radius: 10px;
+}
+
+/* =========================================
+   ACTIONS
+========================================= */
+
+.action-card {
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 18px;
+    padding: 24px;
+    box-shadow: 0 8px 25px rgba(15, 23, 42, 0.05);
+}
+
+.action-header {
+    margin-bottom: 16px;
+}
+
+.action-header h2 {
+    margin: 0 0 5px;
+    font-size: 18px;
+    color: #111827;
+}
+
+.action-header p {
+    margin: 0;
+    color: #64748b;
+    font-size: 13px;
+}
+
+.job-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.job-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    padding: 11px 17px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.job-btn:hover {
+    transform: translateY(-1px);
+}
+
+.btn-match {
+    background: #4f46e5;
+    color: white;
+}
+
+.btn-match:hover {
+    background: #4338ca;
+}
+
+.btn-readiness {
+    background: #15803d;
+    color: white;
+}
+
+.btn-readiness:hover {
+    background: #166534;
+}
+
+.btn-roadmap {
+    background: #d97706;
+    color: white;
+}
+
+.btn-roadmap:hover {
+    background: #b45309;
+}
+
+.btn-reanalyze {
+    background: #f1f5f9;
+    color: #334155;
+    border: 1px solid #e2e8f0;
+}
+
+.btn-reanalyze:hover {
+    background: #e2e8f0;
+}
+
+.btn-delete {
+    background: #fee2e2;
+    color: #b91c1c;
+}
+
+.btn-delete:hover {
+    background: #fecaca;
+}
+
+/* Re-analyze form */
+
+.reanalyze-form {
+    margin: 0;
+}
+
+/* =========================================
+   BACK LINK
+========================================= */
+
+.back-link {
+    display: inline-flex;
+    align-items: center;
+    margin-top: 22px;
+    color: #4f46e5;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.back-link:hover {
+    text-decoration: underline;
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 800px) {
+
+    .job-page {
+        padding: 25px 16px 45px;
+    }
+
+    .job-header-card {
+        padding: 24px;
+    }
+
+    .job-title-area h1 {
+        font-size: 26px;
+    }
+
+    .description-card {
+        padding: 22px;
+    }
+
+}
+
+@media (max-width: 600px) {
+
+    .job-header-top {
+        flex-direction: column;
+    }
+
+    .job-header-card {
+        padding: 20px;
+    }
+
+    .job-title-area h1 {
+        font-size: 23px;
+    }
+
+    .description-header {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .job-actions {
+        flex-direction: column;
+    }
+
+    .job-btn {
+        width: 100%;
+    }
+
+}
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="job-page">
+
+    <!-- =========================================
+         JOB HEADER
+    ========================================== -->
+
+    <div class="job-header-card">
+
+        <div class="job-header-top">
+
+            <div class="job-title-area">
+
+                <h1>
+                    {{ job.job_title }}
+                </h1>
+
+                <div class="job-date">
+                    Added {{ job.created_at|date:"M d, Y" }}
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Required Skills -->
+
+        <div class="skill-section">
+
+            <h2>
+                Required Skills
+            </h2>
+
+            {% if required_skills %}
+
+                <div class="skill-tags">
+
+                    {% for js in required_skills %}
+
+                        <span class="skill-tag">
+                            {{ js.skill.name }}
+                        </span>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="no-skills">
+                    No required skills detected.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Preferred Skills -->
+
+        <div class="skill-section">
+
+            <h2>
+                Preferred Skills
+            </h2>
+
+            {% if preferred_skills %}
+
+                <div class="skill-tags">
+
+                    {% for js in preferred_skills %}
+
+                        <span class="skill-tag preferred-tag">
+                            {{ js.skill.name }}
+                        </span>
+
+                    {% endfor %}
+
+                </div>
+
+            {% else %}
+
+                <div class="no-skills">
+                    No preferred skills detected.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         JOB DESCRIPTION
+    ========================================== -->
+
+    <div class="description-card">
+
+        <div class="description-header">
+
+            <h2>
+                Full Job Description
+            </h2>
+
+            <span class="description-label">
+                Job Details
+            </span>
+
+        </div>
+
+
+        <div class="job-description">
+            {{ job.raw_description }}
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         ACTIONS
+    ========================================== -->
+
+    <div class="action-card">
+
+        <div class="action-header">
+
+            <h2>
+                Job Preparation
+            </h2>
+
+            <p>
+                Use this job analysis to prepare your skills, projects and interview readiness.
+            </p>
+
+        </div>
+
+
+        <div class="job-actions">
+
+            <!-- Skill Match -->
+
+            <a
+                href="{% url 'jobs:job_match' job.id %}"
+                class="job-btn btn-match"
+            >
+                View Skill Match
+            </a>
+
+
+            <!-- Readiness -->
+
+            <a
+                href="{% url 'readiness:readiness_detail' job.id %}"
+                class="job-btn btn-readiness"
+            >
+                View Readiness
+            </a>
+
+
+            <!-- Roadmap -->
+
+            <a href="{% url 'roadmap:roadmap_detail' job.id %}" class="job-btn btn-roadmap">
+                View Roadmap
+            </a>
+
+
+            <!-- Re-analyze -->
+
+            <form
+                method="post"
+                action="{% url 'jobs:reanalyze_job' job.id %}"
+                class="reanalyze-form"
+            >
+
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="job-btn btn-reanalyze"
+                >
+                    Re-analyze Skills
+                </button>
+
+            </form>
+
+
+            <!-- Delete -->
+
+            <form
+                method="post"
+                action="{% url 'jobs:delete_job' job.id %}"
+                class="reanalyze-form"
+            >
+
+                {% csrf_token %}
+
+                <button
+                    type="submit"
+                    class="job-btn btn-delete"
+                    onclick="return confirm('Are you sure you want to delete this job analysis?');"
+                >
+                    Delete
+                </button>
+
+            </form>
+
+        </div>
+
+    </div>
+
+
+    <!-- =========================================
+         BACK
+    ========================================== -->
+
+    <a
+        href="{% url 'jobs:job_list' %}"
+        class="back-link"
+    >
+        ← Back to Job Analysis
+    </a>
+
+</div>
+
+{% endblock %}

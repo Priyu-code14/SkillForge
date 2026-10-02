@@ -1,0 +1,1428 @@
+{% extends "base.html" %}
+
+{% block title %}
+Dashboard | SkillForge
+{% endblock %}
+
+
+{% block extra_css %}
+
+<style>
+
+/* =========================================================
+   DASHBOARD
+========================================================= */
+
+.dashboard-container {
+    width: 100%;
+}
+
+/* =========================================================
+   WELCOME
+========================================================= */
+
+.welcome {
+    margin-bottom: 30px;
+}
+
+.welcome h1 {
+    font-size: 32px;
+    margin-bottom: 8px;
+    color: #111827;
+}
+
+.welcome p {
+    color: #64748b;
+    font-size: 16px;
+}
+
+
+/* =========================================================
+   TARGET ROLE
+========================================================= */
+
+.target-role {
+    background: #ffffff;
+    padding: 24px;
+    border-radius: 14px;
+    margin-bottom: 25px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+.target-role-label {
+    color: #64748b;
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 7px;
+    letter-spacing: 0.5px;
+}
+
+.target-role h2 {
+    font-size: 25px;
+    color: #111827;
+    margin: 0;
+}
+
+
+/* =========================================================
+   SUMMARY CARDS
+========================================================= */
+
+.summary-cards {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.summary-card {
+    background: #ffffff;
+    padding: 23px;
+    border-radius: 14px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+.summary-card h3 {
+    color: #64748b;
+    font-size: 14px;
+    margin-bottom: 13px;
+}
+
+.summary-number {
+    font-size: 30px;
+    font-weight: 700;
+    color: #111827;
+    margin-bottom: 7px;
+}
+
+.summary-text {
+    color: #64748b;
+    font-size: 13px;
+}
+
+
+/* =========================================================
+   PROGRESS
+========================================================= */
+
+.progress {
+    width: 100%;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 10px 0;
+}
+
+.progress-bar {
+    height: 100%;
+    background: #4f46e5;
+    border-radius: 10px;
+}
+
+
+/* =========================================================
+   TWO COLUMN SECTION
+========================================================= */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 2fr) minmax(300px, 1fr);
+    gap: 20px;
+    margin-bottom: 25px;
+    align-items: start;
+}
+
+.dashboard-section {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+}
+
+.dashboard-section h2 {
+    font-size: 21px;
+    margin-bottom: 20px;
+    color: #111827;
+}
+
+
+/* =========================================================
+   SKILLS
+========================================================= */
+
+.skill {
+    margin-bottom: 18px;
+}
+
+.skill:last-child {
+    margin-bottom: 0;
+}
+
+.skill-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 7px;
+    font-size: 14px;
+}
+
+.skill-name {
+    color: #111827;
+    font-weight: 500;
+}
+
+.skill-score {
+    color: #64748b;
+    font-weight: 600;
+}
+
+.skill-progress {
+    height: 7px;
+    background: #e5e7eb;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.skill-progress-bar {
+    height: 100%;
+    background: #4f46e5;
+    border-radius: 10px;
+}
+
+
+/* =========================================================
+   PREPARATION SUMMARY
+========================================================= */
+
+.preparation-summary {
+    background: #ffffff;
+    border-radius: 14px;
+    padding: 25px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+
+    /* Important: prevents huge stretched empty area */
+    height: fit-content;
+    align-self: start;
+}
+
+.preparation-summary h2 {
+    color: #111827;
+    font-size: 21px;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+.prep-stats {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.prep-stat {
+    display: flex;
+    align-items: center;
+    gap: 13px;
+
+    padding: 14px;
+
+    background: #f8fafc;
+    border: 1px solid #eef0f3;
+
+    border-radius: 12px;
+
+    transition: 0.2s ease;
+}
+
+.prep-stat:hover {
+    border-color: #c7d2fe;
+    background: #f8f7ff;
+    transform: translateY(-1px);
+}
+
+.prep-icon {
+    width: 42px;
+    height: 42px;
+    min-width: 42px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background: #eef2ff;
+    color: #4f46e5;
+
+    border-radius: 10px;
+
+    font-size: 18px;
+}
+
+.prep-info {
+    flex: 1;
+}
+
+.prep-label {
+    color: #6b7280;
+    font-size: 12px;
+    margin-bottom: 3px;
+}
+
+.prep-value {
+    color: #111827;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.prep-arrow {
+    color: #9ca3af;
+    font-size: 18px;
+}
+
+
+/* =========================================================
+   QUICK ACTIONS
+========================================================= */
+
+.action {
+    display: block;
+
+    text-decoration: none;
+    color: #ffffff;
+
+    background: #4f46e5;
+
+    text-align: center;
+
+    padding: 12px 15px;
+
+    border-radius: 8px;
+
+    margin-bottom: 11px;
+
+    font-weight: 600;
+
+    transition: 0.2s ease;
+}
+
+.action:last-child {
+    margin-bottom: 0;
+}
+
+.action:hover {
+    background: #4338ca;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+
+/* =========================================================
+   CAREER MODULES
+========================================================= */
+
+.modules-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.module {
+    background: #ffffff;
+    padding: 23px;
+
+    border-radius: 14px;
+
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+
+    display: flex;
+    flex-direction: column;
+}
+
+.module h3 {
+    margin-bottom: 10px;
+    font-size: 19px;
+    color: #111827;
+}
+
+.module p {
+    color: #64748b;
+    line-height: 1.5;
+    margin-bottom: 18px;
+    font-size: 14px;
+    flex: 1;
+}
+
+.module-link {
+    color: #4f46e5;
+    text-decoration: none;
+    font-weight: 700;
+}
+
+.module-link:hover {
+    text-decoration: underline;
+}
+
+/* =========================================================
+   LATEST JOB READINESS
+========================================================= */
+
+.job-readiness-card {
+    background: #ffffff;
+    padding: 25px;
+    border-radius: 14px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+    margin-bottom: 25px;
+}
+
+.job-readiness-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.job-readiness-label {
+    color: #64748b;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+    margin-bottom: 7px;
+}
+
+.job-readiness-header h2 {
+    color: #111827;
+    font-size: 22px;
+    margin: 0 0 6px;
+    word-break: break-word;
+}
+
+.job-readiness-header p {
+    color: #64748b;
+    font-size: 14px;
+    margin: 0;
+}
+
+.job-readiness-score {
+    min-width: 100px;
+    text-align: center;
+    padding: 14px;
+    background: #eef2ff;
+    border-radius: 12px;
+}
+
+.job-readiness-score span {
+    display: block;
+    color: #4f46e5;
+    font-size: 25px;
+    font-weight: 700;
+}
+
+.job-readiness-score small {
+    color: #64748b;
+    font-size: 11px;
+}
+
+.job-readiness-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.job-action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    padding: 11px 16px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    transition: 0.2s ease;
+}
+
+.primary-action {
+    background: #4f46e5;
+    color: #ffffff;
+}
+
+.primary-action:hover {
+    background: #4338ca;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+.secondary-action {
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    color: #374151;
+}
+
+.secondary-action:hover {
+    background: #f1f5f9;
+    color: #111827;
+}
+
+.empty-job-card {
+    display: flex;
+    align-items: center;
+    gap: 18px;
+}
+
+.job-readiness-icon {
+    width: 52px;
+    height: 52px;
+    min-width: 52px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #eef2ff;
+    color: #4f46e5;
+    border-radius: 12px;
+    font-size: 22px;
+}
+
+.job-readiness-content {
+    flex: 1;
+}
+
+.job-readiness-content h2 {
+    font-size: 21px;
+    color: #111827;
+    margin-bottom: 7px;
+}
+
+.job-readiness-content p {
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.5;
+    margin-bottom: 15px;
+}
+
+
+/* =========================================================
+   JOB READINESS - MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .job-readiness-card {
+        padding: 18px;
+        margin-bottom: 20px;
+    }
+
+    .job-readiness-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .job-readiness-header h2 {
+        font-size: 19px;
+    }
+
+    .job-readiness-score {
+        width: 100%;
+    }
+
+    .job-readiness-actions {
+        flex-direction: column;
+    }
+
+    .job-action {
+        width: 100%;
+    }
+
+    .empty-job-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .job-readiness-content {
+        width: 100%;
+    }
+
+}
+
+/* =========================================================
+   EMPTY STATES
+========================================================= */
+
+.empty-message {
+    color: #64748b;
+    font-size: 14px;
+    padding: 10px 0;
+}
+
+
+/* =========================================================
+   RESPONSIVE - TABLET
+========================================================= */
+
+@media (max-width: 1000px) {
+
+    .summary-cards {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modules-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+}
+
+
+/* =========================================================
+   RESPONSIVE - MOBILE
+========================================================= */
+
+@media (max-width: 600px) {
+
+    .dashboard-container {
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    /* -------------------------
+       Welcome
+    ------------------------- */
+
+    .welcome {
+        margin-bottom: 22px;
+    }
+
+    .welcome h1 {
+        font-size: 24px;
+        line-height: 1.3;
+        word-break: break-word;
+    }
+
+    .welcome p {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+
+    /* -------------------------
+       Target Role
+    ------------------------- */
+
+    .target-role {
+        padding: 18px;
+        margin-bottom: 20px;
+    }
+
+    .target-role h2 {
+        font-size: 20px;
+        line-height: 1.35;
+        word-break: break-word;
+    }
+
+
+    /* -------------------------
+       Summary Cards
+    ------------------------- */
+
+    .summary-cards {
+        grid-template-columns: 1fr;
+        gap: 14px;
+        margin-bottom: 20px;
+    }
+
+    .summary-card {
+        width: 100%;
+        padding: 18px;
+    }
+
+    .summary-number {
+        font-size: 27px;
+    }
+
+
+    /* -------------------------
+       Dashboard Grid
+    ------------------------- */
+
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin-bottom: 20px;
+    }
+
+    .dashboard-section,
+    .preparation-summary {
+        width: 100%;
+        padding: 18px;
+    }
+
+    .dashboard-section h2,
+    .preparation-summary h2 {
+        font-size: 19px;
+    }
+
+
+    /* -------------------------
+       Skills
+    ------------------------- */
+
+    .skill {
+        margin-bottom: 16px;
+    }
+
+    .skill-header {
+        gap: 10px;
+    }
+
+    .skill-name {
+        min-width: 0;
+        word-break: break-word;
+    }
+
+    .skill-score {
+        flex-shrink: 0;
+    }
+
+
+    /* -------------------------
+       Preparation Summary
+    ------------------------- */
+
+    .prep-stats {
+        gap: 10px;
+    }
+
+    .prep-stat {
+        width: 100%;
+        padding: 12px;
+        gap: 10px;
+    }
+
+    .prep-icon {
+        width: 38px;
+        height: 38px;
+        min-width: 38px;
+        font-size: 16px;
+    }
+
+    .prep-info {
+        min-width: 0;
+    }
+
+    .prep-label {
+        font-size: 11px;
+    }
+
+    .prep-value {
+        font-size: 18px;
+    }
+
+    .prep-arrow {
+        flex-shrink: 0;
+        font-size: 16px;
+    }
+
+
+    /* -------------------------
+       Quick Actions
+    ------------------------- */
+
+    .action {
+        width: 100%;
+        padding: 12px;
+        font-size: 14px;
+        line-height: 1.4;
+    }
+
+
+    /* -------------------------
+       Career Modules
+    ------------------------- */
+
+    .modules-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        margin-top: 20px;
+    }
+
+    .module {
+        width: 100%;
+        padding: 18px;
+    }
+
+    .module h3 {
+        font-size: 18px;
+    }
+
+    .module p {
+        font-size: 14px;
+        line-height: 1.5;
+    }
+
+}
+
+
+/* =========================================================
+   VERY SMALL PHONES
+========================================================= */
+
+@media (max-width: 380px) {
+
+    .welcome h1 {
+        font-size: 21px;
+    }
+
+    .target-role h2 {
+        font-size: 18px;
+    }
+
+    .summary-card {
+        padding: 16px;
+    }
+
+    .summary-number {
+        font-size: 25px;
+    }
+
+    .dashboard-section,
+    .preparation-summary {
+        padding: 16px;
+    }
+
+    .prep-stat {
+        padding: 10px;
+    }
+
+    .prep-icon {
+        width: 34px;
+        height: 34px;
+        min-width: 34px;
+    }
+
+}
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="dashboard-container">
+
+
+    <!-- =====================================================
+         WELCOME
+    ====================================================== -->
+
+    <div class="welcome">
+
+        <h1>
+            Welcome back, {{ user.username }} 👋
+        </h1>
+
+        <p>
+            Track your skills, projects and career readiness.
+        </p>
+
+    </div>
+
+
+    <!-- =====================================================
+         TARGET ROLE
+    ====================================================== -->
+
+    {% if user.profile.target_role %}
+
+    <div class="target-role">
+
+        <div class="target-role-label">
+            TARGET ROLE
+        </div>
+
+        <h2>
+            {{ user.profile.target_role.name }}
+        </h2>
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- =====================================================
+         SUMMARY CARDS
+    ====================================================== -->
+
+    <div class="summary-cards">
+
+
+        <!-- Career Readiness -->
+
+        <div class="summary-card">
+
+            <h3>
+                Career Readiness
+            </h3>
+
+            {% if readiness_score %}
+
+                <div class="summary-number">
+                    {{ readiness_score }}%
+                </div>
+
+                <div class="progress">
+
+                    <div
+                        class="progress-bar"
+                        style="width: {{ readiness_score }}%;">
+                    </div>
+
+                </div>
+
+            {% else %}
+
+                <div class="summary-number">
+                    —
+                </div>
+
+                <div class="progress">
+
+                    <div
+                        class="progress-bar"
+                        style="width: 0%;">
+                    </div>
+
+                </div>
+
+                <div class="summary-text">
+                    Complete your preparation steps to track readiness.
+                </div>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Skills -->
+
+        <div class="summary-card">
+
+            <h3>
+                Skills
+            </h3>
+
+            <div class="summary-number">
+                {{ user_skills|length }}
+            </div>
+
+            <div class="summary-text">
+                Skills added to your profile
+            </div>
+
+        </div>
+
+
+        <!-- Projects -->
+
+        <div class="summary-card">
+
+            <h3>
+                Projects
+            </h3>
+
+            <div class="summary-number">
+                {{ project_count }}
+            </div>
+
+            <div class="summary-text">
+                {{ completed_project_count }} completed
+            </div>
+
+        </div>
+
+
+        <!-- Interviews -->
+
+        <div class="summary-card">
+
+            <h3>
+                Interview Practice
+            </h3>
+
+            <div class="summary-number">
+                {{ interview_count }}
+            </div>
+
+            <div class="summary-text">
+                Average confidence:
+                {{ average_confidence|default:"0" }}/5
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         SKILLS + PREPARATION
+    ====================================================== -->
+
+    <div class="dashboard-grid">
+
+
+        <!-- My Skills -->
+
+        <div class="dashboard-section">
+
+            <h2>
+                My Skills
+            </h2>
+
+            {% if user_skills %}
+
+                {% for user_skill in user_skills %}
+
+                    <div class="skill">
+
+                        <div class="skill-header">
+
+                            <span class="skill-name">
+                                {{ user_skill.skill.name }}
+                            </span>
+
+                            <span class="skill-score">
+                                {{ user_skill.score }}%
+                            </span>
+
+                        </div>
+
+                        <div class="skill-progress">
+
+                            <div
+                                class="skill-progress-bar"
+                                style="width: {{ user_skill.score }}%;">
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                {% endfor %}
+
+            {% else %}
+
+                <p class="empty-message">
+                    No skills added yet.
+                </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- Preparation Summary -->
+
+        <div class="preparation-summary">
+
+            <h2>
+                Preparation Summary
+            </h2>
+
+            <div class="prep-stats">
+
+
+                <!-- Projects -->
+
+                <div class="prep-stat">
+
+                    <div class="prep-icon">
+                        <i class="bi bi-folder"></i>
+                    </div>
+
+                    <div class="prep-info">
+
+                        <div class="prep-label">
+                            Total Projects
+                        </div>
+
+                        <div class="prep-value">
+                            {{ total_projects }}
+                        </div>
+
+                    </div>
+
+                    <div class="prep-arrow">
+                        →
+                    </div>
+
+                </div>
+
+
+                <!-- Completed Projects -->
+
+                <div class="prep-stat">
+
+                    <div class="prep-icon">
+                        <i class="bi bi-check-circle"></i>
+                    </div>
+
+                    <div class="prep-info">
+
+                        <div class="prep-label">
+                            Completed Projects
+                        </div>
+
+                        <div class="prep-value">
+                            {{ completed_projects }}
+                        </div>
+
+                    </div>
+
+                    <div class="prep-arrow">
+                        →
+                    </div>
+
+                </div>
+
+
+                <!-- Interview Sessions -->
+
+                <div class="prep-stat">
+
+                    <div class="prep-icon">
+                        <i class="bi bi-mic"></i>
+                    </div>
+
+                    <div class="prep-info">
+
+                        <div class="prep-label">
+                            Interview Sessions
+                        </div>
+
+                        <div class="prep-value">
+                            {{ interview_sessions }}
+                        </div>
+
+                    </div>
+
+                    <div class="prep-arrow">
+                        →
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+<!-- =====================================================
+     LATEST JOB READINESS
+====================================================== -->
+
+{% if latest_job %}
+
+<div class="job-readiness-card">
+
+    <div class="job-readiness-header">
+
+        <div>
+            <div class="job-readiness-label">
+                LATEST JOB ANALYSIS
+            </div>
+
+            <h2>
+                {{ latest_job.job_title }}
+            </h2>
+
+            <p>
+                Your latest analyzed job and career readiness status.
+            </p>
+        </div>
+
+        {% if readiness_score %}
+            <div class="job-readiness-score">
+                <span>{{ readiness_score }}%</span>
+                <small>Readiness</small>
+            </div>
+        {% endif %}
+
+    </div>
+
+
+    <div class="job-readiness-actions">
+
+        <a
+            href="{% url 'jobs:job_detail' latest_job.id %}"
+            class="job-action secondary-action"
+        >
+            <i class="bi bi-briefcase"></i>
+            View Job Analysis
+        </a>
+
+        {% if readiness_score %}
+            <a
+                href="{% url 'readiness:readiness_detail' latest_job.id %}"
+                class="job-action primary-action"
+            >
+                <i class="bi bi-bar-chart"></i>
+                View Readiness
+            </a>
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% else %}
+
+<div class="job-readiness-card empty-job-card">
+
+    <div class="job-readiness-icon">
+        <i class="bi bi-briefcase"></i>
+    </div>
+
+    <div class="job-readiness-content">
+
+        <h2>
+            Start Your Job Analysis
+        </h2>
+
+        <p>
+            Analyze a job description to compare its requirements
+            with your skills, projects and interview preparation.
+        </p>
+
+        <a
+            href="{% url 'jobs:job_list' %}"
+            class="job-action primary-action"
+        >
+            <i class="bi bi-search"></i>
+            Analyze a Job
+        </a>
+
+    </div>
+
+</div>
+
+{% endif %}
+
+    <!-- =====================================================
+         QUICK ACTIONS + CAREER MODULES
+    ====================================================== -->
+
+    <div class="dashboard-grid">
+
+
+        <!-- Quick Actions -->
+
+        <div class="dashboard-section">
+
+            <h2>
+                Quick Actions
+            </h2>
+
+            <a
+                href="{% url 'skills:add_skill' %}"
+                class="action">
+                Add Skill
+            </a>
+
+            <a
+                href="{% url 'projects:project_list' %}"
+                class="action">
+                Manage Projects
+            </a>
+
+            <a
+                href="{% url 'interviews:interview_home' %}"
+                class="action">
+                Practice Interview
+            </a>
+
+            <a
+                href="{% url 'jobs:job_list' %}"
+                class="action">
+                View Job Analysis
+            </a>
+
+        </div>
+
+
+        <!-- Career Modules -->
+
+        <div class="dashboard-section">
+
+            <h2>
+                Career Modules
+            </h2>
+
+            <a
+                href="{% url 'resume:upload_resume' %}"
+                class="action">
+                Resume
+            </a>
+
+            <a
+                href="{% url 'jobs:job_list' %}"
+                class="action">
+                Job Analysis
+            </a>
+
+            <a
+                href="{% url 'interviews:interview_progress' %}"
+                class="action">
+                Interview Progress
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================================
+         CAREER MODULE CARDS
+    ====================================================== -->
+
+    <div class="modules-grid">
+
+
+        <!-- Skills -->
+
+        <div class="module">
+
+            <h3>
+                Skills
+            </h3>
+
+            <p>
+                Track your technical skills and current proficiency levels.
+            </p>
+
+            <a
+                href="{% url 'skills:skill_list' %}"
+                class="module-link">
+                View Skills →
+            </a>
+
+        </div>
+
+
+        <!-- Projects -->
+
+        <div class="module">
+
+            <h3>
+                Projects
+            </h3>
+
+            <p>
+                Manage your projects and connect them with your technical skills.
+            </p>
+
+            <a
+                href="{% url 'projects:project_list' %}"
+                class="module-link">
+                View Projects →
+            </a>
+
+        </div>
+
+
+        <!-- Resume -->
+
+        <div class="module">
+
+            <h3>
+                Resume
+            </h3>
+
+            <p>
+                Upload and manage your resume for career preparation.
+            </p>
+
+            <a
+                href="{% url 'resume:upload_resume' %}"
+                class="module-link">
+                Manage Resume →
+            </a>
+
+        </div>
+
+
+        <!-- Job Analysis -->
+
+        <div class="module">
+
+            <h3>
+                Job Analysis
+            </h3>
+
+            <p>
+                Analyze job requirements and compare them with your current skills.
+            </p>
+
+            <a
+                href="{% url 'jobs:job_list' %}"
+                class="module-link">
+                Analyze Jobs →
+            </a>
+
+        </div>
+
+
+        <!-- Roadmap -->
+
+        <div class="module">
+
+            <h3>
+                Roadmap
+            </h3>
+
+            <p>
+                Generate a preparation roadmap after selecting a job and identify the skills you need to improve.
+            </p>
+
+            <!--
+                Roadmap requires a job_id.
+                Therefore we intentionally send the user to Job Analysis
+                first instead of inventing a nonexistent roadmap URL.
+            -->
+
+            <a
+                href="{% url 'jobs:job_list' %}"
+                class="module-link">
+                Choose Job → 
+            </a>
+
+        </div>
+
+
+        <!-- Interviews -->
+
+        <div class="module">
+
+            <h3>
+                Interviews
+            </h3>
+
+            <p>
+                Practice role-specific, skill-based and project-based interview questions.
+            </p>
+
+            <a
+                href="{% url 'interviews:interview_home' %}"
+                class="module-link">
+                Practice Interviews →
+            </a>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

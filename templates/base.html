@@ -1,0 +1,737 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>
+        {% block title %}SkillForge{% endblock %}
+    </title>
+
+
+    <style>
+
+        /* =========================================================
+           GLOBAL RESET
+        ========================================================= */
+
+        *,
+        *::before,
+        *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+            color: #111827;
+            min-height: 100vh;
+            width: 100%;
+            overflow-x: hidden;
+        }
+
+
+        /* =========================================================
+           NAVBAR
+        ========================================================= */
+
+        .navbar {
+            width: 100%;
+            min-height: 70px;
+
+            background: #111827;
+            color: white;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            padding: 0 7%;
+
+            position: relative;
+            z-index: 9999;
+
+            flex-wrap: nowrap;
+        }
+
+
+        /* =========================================================
+           LOGO
+        ========================================================= */
+
+        .logo {
+            color: white;
+            text-decoration: none;
+
+            font-size: 26px;
+            font-weight: bold;
+
+            white-space: nowrap;
+
+            flex-shrink: 0;
+        }
+
+        .logo:hover {
+            color: white;
+        }
+
+
+        /* =========================================================
+           DESKTOP NAVIGATION
+        ========================================================= */
+
+        .nav-links {
+            display: flex;
+
+            align-items: center;
+            justify-content: flex-end;
+
+            gap: 25px;
+
+            flex: 1;
+
+            margin-left: 30px;
+
+            min-width: 0;
+        }
+
+
+        .nav-links a {
+            color: #d1d5db;
+
+            text-decoration: none;
+
+            font-size: 15px;
+            font-weight: 400;
+
+            white-space: nowrap;
+
+            transition:
+                color 0.2s ease,
+                background 0.2s ease;
+
+            flex-shrink: 0;
+        }
+
+
+        .nav-links a:hover {
+            color: white;
+        }
+
+
+        /* =========================================================
+           LOGOUT
+        ========================================================= */
+
+        .logout {
+            background: #4f46e5;
+
+            color: white !important;
+
+            padding: 9px 16px;
+
+            border-radius: 6px;
+        }
+
+
+        .logout:hover {
+            background: #4338ca !important;
+        }
+
+
+        /* =========================================================
+           MOBILE MENU BUTTON
+        ========================================================= */
+
+        .menu-toggle {
+            display: none;
+
+            background: transparent;
+
+            border: none;
+
+            color: white;
+
+            font-size: 28px;
+            line-height: 1;
+
+            cursor: pointer;
+
+            padding: 8px;
+
+            flex-shrink: 0;
+        }
+
+
+        .menu-toggle:focus {
+            outline: 2px solid #818cf8;
+            outline-offset: 2px;
+            border-radius: 6px;
+        }
+
+
+        /* =========================================================
+           MAIN CONTENT
+        ========================================================= */
+
+        .page-container {
+            width: 90%;
+            max-width: 1200px;
+
+            margin: 40px auto;
+
+            min-width: 0;
+        }
+
+
+        /* =========================================================
+           GLOBAL RESPONSIVE ELEMENTS
+        ========================================================= */
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+
+        video,
+        iframe {
+            max-width: 100%;
+        }
+
+
+        table {
+            max-width: 100%;
+        }
+
+
+        input,
+        textarea,
+        select,
+        button {
+            max-width: 100%;
+        }
+
+
+        /* Prevent long text / URLs from breaking mobile layout */
+
+        h1,
+        h2,
+        h3,
+        h4,
+        h5,
+        h6,
+        p,
+        a,
+        span {
+            overflow-wrap: break-word;
+        }
+
+
+        /* =========================================================
+           TABLET
+        ========================================================= */
+
+        @media (max-width: 1100px) {
+
+            .navbar {
+                padding: 0 4%;
+            }
+
+
+            .nav-links {
+                gap: 16px;
+                margin-left: 20px;
+            }
+
+
+            .nav-links a {
+                font-size: 14px;
+            }
+
+
+            .logout {
+                padding: 8px 13px;
+            }
+
+        }
+
+
+        /* =========================================================
+           MOBILE NAVBAR
+        ========================================================= */
+
+        @media (max-width: 900px) {
+
+            .navbar {
+                min-height: 70px;
+
+                padding: 0 5%;
+
+                width: 100%;
+
+                flex-wrap: nowrap;
+            }
+
+
+            .logo {
+                font-size: 24px;
+            }
+
+
+            /* Show hamburger */
+
+            .menu-toggle {
+                display: block;
+            }
+
+
+            /* Hide desktop navigation */
+
+            .nav-links {
+                display: none;
+
+                position: absolute;
+
+                top: 70px;
+                left: 0;
+                right: 0;
+
+                width: 100%;
+
+                margin: 0;
+
+                padding: 10px 5% 20px;
+
+                background: #111827;
+
+                flex-direction: column;
+
+                align-items: stretch;
+
+                justify-content: flex-start;
+
+                gap: 0;
+
+                border-top: 1px solid rgba(255, 255, 255, 0.08);
+
+                box-shadow:
+                    0 8px 20px rgba(0, 0, 0, 0.20);
+
+                overflow-y: auto;
+
+                max-height: calc(100vh - 70px);
+            }
+
+
+            /* Open menu */
+
+            .nav-links.active {
+                display: flex;
+            }
+
+
+            /* Mobile links */
+
+            .nav-links a {
+                display: block;
+
+                width: 100%;
+
+                padding: 14px 10px;
+
+                font-size: 16px;
+
+                white-space: normal;
+
+                border-bottom:
+                    1px solid rgba(255, 255, 255, 0.06);
+            }
+
+
+            .nav-links a:last-child {
+                border-bottom: none;
+            }
+
+
+            /* Mobile logout */
+
+            .nav-links .logout {
+                margin-top: 10px;
+
+                text-align: center;
+
+                border-radius: 6px;
+
+                padding: 12px;
+            }
+
+
+            /* Main content */
+
+            .page-container {
+                width: 92%;
+
+                max-width: 100%;
+
+                margin: 30px auto;
+            }
+
+        }
+
+
+        /* =========================================================
+           SMALL MOBILE
+        ========================================================= */
+
+        @media (max-width: 600px) {
+
+            .navbar {
+                min-height: 64px;
+
+                padding: 0 5%;
+            }
+
+
+            .logo {
+                font-size: 22px;
+            }
+
+
+            .menu-toggle {
+                font-size: 25px;
+
+                padding: 6px;
+            }
+
+
+            .nav-links {
+                top: 64px;
+
+                max-height: calc(100vh - 64px);
+            }
+
+
+            .nav-links a {
+                padding: 13px 8px;
+
+                font-size: 15px;
+            }
+
+
+            .page-container {
+                width: 92%;
+
+                margin: 25px auto;
+            }
+
+        }
+
+
+        /* =========================================================
+           VERY SMALL PHONES
+        ========================================================= */
+
+        @media (max-width: 400px) {
+
+            .navbar {
+                padding: 0 4%;
+            }
+
+
+            .logo {
+                font-size: 20px;
+            }
+
+
+            .menu-toggle {
+                font-size: 23px;
+            }
+
+
+            .page-container {
+                width: 94%;
+
+                margin: 20px auto;
+            }
+
+        }
+
+
+    </style>
+
+
+    {% block extra_css %}
+    {% endblock %}
+
+</head>
+
+
+<body>
+
+
+    <!-- =========================================================
+         NAVBAR
+    ========================================================= -->
+
+    <nav class="navbar">
+
+
+        <!-- Logo -->
+
+        <a
+            href="{% url 'accounts:dashboard' %}"
+            class="logo"
+        >
+            SkillForge
+        </a>
+
+
+        <!-- Mobile Menu Button -->
+
+        <button
+            class="menu-toggle"
+            id="menuToggle"
+            type="button"
+            aria-label="Open navigation menu"
+            aria-expanded="false"
+            aria-controls="navLinks"
+        >
+            ☰
+        </button>
+
+
+        <!-- Navigation Links -->
+
+        <div
+            class="nav-links"
+            id="navLinks"
+        >
+
+            <a href="{% url 'accounts:dashboard' %}">
+                Dashboard
+            </a>
+
+
+            <a href="{% url 'skills:skill_list' %}">
+                Skills
+            </a>
+
+
+            <a href="{% url 'projects:project_list' %}">
+                Projects
+            </a>
+
+
+            <a href="{% url 'resume:upload_resume' %}">
+                Resume
+            </a>
+
+
+            <a href="{% url 'jobs:job_list' %}">
+                Job Analysis
+            </a>
+
+
+            <a href="{% url 'roadmap:roadmap_home' %}">
+                Roadmap
+            </a>
+
+
+            <a href="{% url 'interviews:interview_home' %}">
+                Interviews
+            </a>
+
+
+            <a href="{% url 'interviews:interview_progress' %}">
+                Progress
+            </a>
+
+
+            <a
+                href="{% url 'accounts:logout' %}"
+                class="logout"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </nav>
+
+
+    <!-- =========================================================
+         PAGE CONTENT
+    ========================================================= -->
+
+    <main class="page-container">
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+    <!-- =========================================================
+         MOBILE NAVIGATION JAVASCRIPT
+    ========================================================= -->
+
+    <script>
+
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const menuToggle =
+                document.getElementById("menuToggle");
+
+            const navLinks =
+                document.getElementById("navLinks");
+
+
+            if (!menuToggle || !navLinks) {
+                return;
+            }
+
+
+            /* =====================================================
+               OPEN / CLOSE MENU
+            ===================================================== */
+
+            menuToggle.addEventListener("click", function () {
+
+                navLinks.classList.toggle("active");
+
+                const isOpen =
+                    navLinks.classList.contains("active");
+
+
+                menuToggle.setAttribute(
+                    "aria-expanded",
+                    isOpen ? "true" : "false"
+                );
+
+
+                menuToggle.setAttribute(
+                    "aria-label",
+                    isOpen
+                        ? "Close navigation menu"
+                        : "Open navigation menu"
+                );
+
+            });
+
+
+            /* =====================================================
+               CLOSE MENU AFTER CLICKING LINK
+            ===================================================== */
+
+            const links =
+                navLinks.querySelectorAll("a");
+
+
+            links.forEach(function (link) {
+
+                link.addEventListener("click", function () {
+
+                    navLinks.classList.remove("active");
+
+
+                    menuToggle.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+
+                    menuToggle.setAttribute(
+                        "aria-label",
+                        "Open navigation menu"
+                    );
+
+                });
+
+            });
+
+
+            /* =====================================================
+               CLOSE MENU WHEN CLICKING OUTSIDE
+            ===================================================== */
+
+            document.addEventListener("click", function (event) {
+
+                if (
+                    !navLinks.contains(event.target) &&
+                    !menuToggle.contains(event.target)
+                ) {
+
+                    navLinks.classList.remove("active");
+
+
+                    menuToggle.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+
+                    menuToggle.setAttribute(
+                        "aria-label",
+                        "Open navigation menu"
+                    );
+
+                }
+
+            });
+
+
+            /* =====================================================
+               CLOSE MENU WHEN RESIZING TO DESKTOP
+            ===================================================== */
+
+            window.addEventListener("resize", function () {
+
+                if (window.innerWidth > 900) {
+
+                    navLinks.classList.remove("active");
+
+
+                    menuToggle.setAttribute(
+                        "aria-expanded",
+                        "false"
+                    );
+
+
+                    menuToggle.setAttribute(
+                        "aria-label",
+                        "Open navigation menu"
+                    );
+
+                }
+
+            });
+
+        });
+
+    </script>
+
+
+    {% block extra_js %}
+    {% endblock %}
+
+
+</body>
+
+</html>

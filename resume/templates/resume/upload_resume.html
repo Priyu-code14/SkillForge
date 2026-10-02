@@ -1,0 +1,741 @@
+{% extends "base.html" %}
+
+{% block title %}Resume | SkillForge{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+    /* =========================================
+       RESUME PAGE
+    ========================================= */
+
+    .resume-page {
+        width: 100%;
+        max-width: 1000px;
+        margin: 50px auto;
+    }
+
+
+    /* =========================================
+       PAGE HEADER
+    ========================================= */
+
+    .resume-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 30px;
+        margin-bottom: 30px;
+    }
+
+    .resume-header-text h1 {
+        margin: 0;
+        color: #111827;
+        font-size: 36px;
+        line-height: 1.2;
+    }
+
+    .resume-subtitle {
+        color: #6b7280;
+        margin-top: 8px;
+        font-size: 16px;
+    }
+
+
+    /* =========================================
+       MAIN RESUME CARD
+    ========================================= */
+
+    .resume-card {
+        background: white;
+        border-radius: 14px;
+        padding: 30px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        margin-bottom: 24px;
+    }
+
+
+    /* =========================================
+       CURRENT RESUME
+    ========================================= */
+
+    .current-resume {
+        background: #f9fafb;
+        border-radius: 10px;
+        padding: 18px 20px;
+        margin-bottom: 24px;
+        color: #374151;
+        font-size: 14px;
+        line-height: 1.7;
+        border: 1px solid #eef0f3;
+    }
+
+    .current-resume strong {
+        color: #111827;
+    }
+
+
+    /* =========================================
+       UPLOAD AREA
+    ========================================= */
+
+    .upload-area {
+        border: 2px dashed #d1d5db;
+        border-radius: 10px;
+        padding: 25px;
+        background: #fafafa;
+        transition: 0.2s ease;
+    }
+
+    .upload-area:hover {
+        border-color: #4f46e5;
+        background: #f8f7ff;
+    }
+
+    .file-label {
+        display: block;
+        color: #374151;
+        font-size: 14px;
+        font-weight: 600;
+        margin-bottom: 10px;
+    }
+
+    input[type="file"] {
+        width: 100%;
+        max-width: 100%;
+        padding: 12px;
+        border: 1px solid #d1d5db;
+        border-radius: 8px;
+        background: white;
+        font-size: 14px;
+    }
+
+    .hint {
+        color: #9ca3af;
+        font-size: 13px;
+        line-height: 1.6;
+        margin-top: 10px;
+    }
+
+
+    /* =========================================
+       UPLOAD BUTTON
+    ========================================= */
+
+    .resume-btn {
+        width: 100%;
+        margin-top: 18px;
+        padding: 14px 20px;
+        border: none;
+        border-radius: 8px;
+        background: #4f46e5;
+        color: white;
+        font-size: 15px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: 0.2s ease;
+    }
+
+    .resume-btn:hover {
+        background: #4338ca;
+    }
+
+
+    /* =========================================
+       MESSAGES
+    ========================================= */
+
+    .messages {
+        margin-bottom: 20px;
+    }
+
+    .msg {
+        padding: 13px 16px;
+        border-radius: 8px;
+        margin-bottom: 10px;
+        font-size: 14px;
+    }
+
+    .msg.success {
+        background: #dcfce7;
+        color: #166534;
+    }
+
+    .msg.error {
+        background: #fee2e2;
+        color: #b91c1c;
+    }
+
+
+    /* =========================================
+       INFORMATION SECTIONS
+    ========================================= */
+
+    .resume-section {
+        margin-top: 30px;
+        padding-top: 28px;
+        border-top: 1px solid #e5e7eb;
+    }
+
+    .resume-section:first-child {
+        margin-top: 0;
+        padding-top: 0;
+        border-top: none;
+    }
+
+    .section-title {
+        color: #111827;
+        font-size: 19px;
+        font-weight: 700;
+        margin-bottom: 8px;
+    }
+
+    .section-description {
+        color: #9ca3af;
+        font-size: 13px;
+        line-height: 1.6;
+        margin-bottom: 18px;
+    }
+
+
+    /* =========================================
+       SUGGESTED SKILLS
+    ========================================= */
+
+    .suggested-skills {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .suggest-row {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        background: #f9fafb;
+        border-radius: 8px;
+        border: 1px solid #eef0f3;
+    }
+
+    .skill-tag {
+        background: #eef2ff;
+        color: #4f46e5;
+        font-size: 12px;
+        font-weight: bold;
+        padding: 6px 12px;
+        border-radius: 20px;
+        white-space: nowrap;
+    }
+
+    .suggest-row select {
+        padding: 7px 10px;
+        border: 1px solid #d1d5db;
+        border-radius: 6px;
+        background: white;
+        font-size: 13px;
+        color: #374151;
+    }
+
+    .import-btn {
+        background: #4f46e5;
+        color: white;
+        border: none;
+        padding: 7px 13px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: bold;
+        cursor: pointer;
+    }
+
+    .import-btn:hover {
+        background: #4338ca;
+    }
+
+
+    /* =========================================
+       PROJECT BLOCKS
+    ========================================= */
+
+    .project-blocks {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    .project-block {
+        background: #f9fafb;
+        border-radius: 10px;
+        padding: 20px;
+        border: 1px solid #eef0f3;
+    }
+
+    .project-block-title {
+        color: #111827;
+        font-size: 18px;
+        font-weight: bold;
+        margin-bottom: 6px;
+    }
+
+    .project-block-tech {
+        color: #4f46e5;
+        font-size: 13px;
+        font-weight: 600;
+        margin-bottom: 12px;
+    }
+
+    .project-block-desc {
+        color: #4b5563;
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+
+    /* =========================================
+       MY PROJECTS BUTTON
+    ========================================= */
+
+    .projects-link {
+        display: inline-block;
+        margin-top: 18px;
+        background: #4f46e5;
+        color: white;
+        padding: 11px 18px;
+        border-radius: 7px;
+        font-size: 14px;
+        font-weight: 600;
+        text-decoration: none;
+        transition: 0.2s ease;
+    }
+
+    .projects-link:hover {
+        background: #4338ca;
+        color: white;
+        text-decoration: none;
+    }
+
+
+    /* =========================================
+       EMPTY / NO DATA
+    ========================================= */
+
+    .empty-message {
+        color: #9ca3af;
+        font-size: 13px;
+        line-height: 1.6;
+        padding: 15px 0;
+    }
+
+
+    /* =========================================
+       RESPONSIVE - TABLET
+    ========================================= */
+
+    @media (max-width: 900px) {
+
+        .resume-page {
+            width: 92%;
+            margin: 35px auto;
+        }
+
+        .resume-header {
+            gap: 20px;
+        }
+
+        .resume-header-text h1 {
+            font-size: 32px;
+        }
+
+        .resume-card {
+            padding: 25px;
+        }
+    }
+
+
+    /* =========================================
+       RESPONSIVE - MOBILE
+    ========================================= */
+
+    @media (max-width: 650px) {
+
+        .resume-page {
+            width: 94%;
+            margin: 25px auto;
+        }
+
+        .resume-header {
+            flex-direction: column;
+            gap: 8px;
+            margin-bottom: 22px;
+        }
+
+        .resume-header-text h1 {
+            font-size: 28px;
+        }
+
+        .resume-subtitle {
+            font-size: 14px;
+        }
+
+        .resume-card {
+            padding: 18px;
+            border-radius: 10px;
+        }
+
+        .upload-area {
+            padding: 18px;
+        }
+
+        input[type="file"] {
+            font-size: 13px;
+        }
+
+        .suggest-row {
+            flex-wrap: wrap;
+            align-items: flex-start;
+        }
+
+        .suggest-row select {
+            flex: 1;
+            min-width: 130px;
+        }
+
+        .import-btn {
+            padding: 8px 13px;
+        }
+
+        .project-block {
+            padding: 16px;
+        }
+
+        .project-block-title {
+            font-size: 16px;
+        }
+
+        .project-block-desc {
+            font-size: 13px;
+        }
+
+        .projects-link {
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+
+    /* =========================================
+       SMALL MOBILE
+    ========================================= */
+
+    @media (max-width: 400px) {
+
+        .resume-page {
+            width: 95%;
+        }
+
+        .resume-card {
+            padding: 15px;
+        }
+
+        .resume-header-text h1 {
+            font-size: 25px;
+        }
+
+        .suggest-row {
+            flex-direction: column;
+        }
+
+        .suggest-row select,
+        .import-btn {
+            width: 100%;
+        }
+
+        .skill-tag {
+            width: fit-content;
+        }
+
+        .projects-link {
+            width: 100%;
+            text-align: center;
+        }
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="resume-page">
+
+    <!-- =====================================
+         PAGE HEADER
+    ====================================== -->
+
+    <div class="resume-header">
+
+        <div class="resume-header-text">
+
+            <h1>Resume</h1>
+
+            <p class="resume-subtitle">
+                Upload and analyze your resume to build your career profile.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <!-- =====================================
+         MESSAGES
+    ====================================== -->
+
+    {% if messages %}
+
+    <div class="messages">
+
+        {% for message in messages %}
+
+            <div class="msg {{ message.tags }}">
+                {{ message }}
+            </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% endif %}
+
+
+    <!-- =====================================
+         MAIN RESUME CARD
+    ====================================== -->
+
+    <div class="resume-card">
+
+        <!-- CURRENT RESUME -->
+
+        {% if resume %}
+
+        <div class="current-resume">
+
+            <strong>Current Resume</strong><br>
+
+            File:
+            <strong>{{ resume.original_filename }}</strong>
+
+            <br>
+
+            Uploaded:
+            {{ resume.uploaded_at }}
+
+        </div>
+
+        {% endif %}
+
+
+        <!-- UPLOAD -->
+
+        <div class="upload-area">
+
+            <form method="POST" enctype="multipart/form-data">
+
+                {% csrf_token %}
+
+                <label class="file-label">
+                    Select your resume
+                </label>
+
+                <input
+                    type="file"
+                    name="file"
+                    accept=".pdf,.docx"
+                    required
+                >
+
+                <p class="hint">
+                    Accepted formats: PDF and DOCX.
+                    Uploading a new resume replaces the current one.
+                </p>
+
+                <button type="submit" class="resume-btn">
+
+                    {% if resume %}
+                        Replace Resume
+                    {% else %}
+                        Upload Resume
+                    {% endif %}
+
+                </button>
+
+            </form>
+
+        </div>
+
+
+        <!-- =================================
+             SUGGESTED SKILLS
+        ================================== -->
+
+        {% if resume and resume.extracted_text %}
+
+        <div class="resume-section">
+
+            <h2 class="section-title">
+                Suggested Skills to Add
+            </h2>
+
+            {% if suggested_skills %}
+
+            <p class="section-description">
+                Skills found in your resume that are not currently
+                being tracked. Select the appropriate level and add them.
+            </p>
+
+            <div class="suggested-skills">
+
+                {% for skill in suggested_skills %}
+
+                <form
+                    method="POST"
+                    action="{% url 'resume:add_suggested_skill' skill.id %}"
+                    class="suggest-row"
+                >
+
+                    {% csrf_token %}
+
+                    <span class="skill-tag">
+                        {{ skill.name }}
+                    </span>
+
+                    <select name="level">
+
+                        <option value="Beginner">
+                            Beginner
+                        </option>
+
+                        <option value="Intermediate">
+                            Intermediate
+                        </option>
+
+                        <option value="Advanced">
+                            Advanced
+                        </option>
+
+                    </select>
+
+                    <button type="submit" class="import-btn">
+                        + Add
+                    </button>
+
+                </form>
+
+                {% endfor %}
+
+            </div>
+
+            {% else %}
+
+            <p class="empty-message">
+                No new skills to suggest — either none were detected,
+                or you're already tracking all detected skills.
+            </p>
+
+            {% endif %}
+
+        </div>
+
+
+        <!-- =================================
+             PROJECTS FROM RESUME
+        ================================== -->
+
+        <div class="resume-section">
+
+            <h2 class="section-title">
+                Projects from Resume
+            </h2>
+
+            {% if project_blocks %}
+
+            <div class="project-blocks">
+
+                {% for block in project_blocks %}
+
+                <div class="project-block">
+
+                    <div class="project-block-title">
+                        {{ block.title }}
+                    </div>
+
+                    <div class="project-block-tech">
+                        {{ block.technologies }}
+                    </div>
+
+                    <div class="project-block-desc">
+                        {{ block.description }}
+                    </div>
+
+                </div>
+
+                {% endfor %}
+
+            </div>
+
+            <a
+                href="{% url 'projects:project_list' %}"
+                class="projects-link"
+            >
+                View My Projects →
+            </a>
+
+            {% elif resume.projects_text %}
+
+            <div class="project-block">
+
+                <div class="project-block-desc">
+                    {{ resume.projects_text }}
+                </div>
+
+            </div>
+
+            <p class="empty-message">
+                Couldn't split this into individual projects automatically.
+            </p>
+
+            {% else %}
+
+            <p class="empty-message">
+                No projects were detected because a Projects section
+                was not found in this resume.
+            </p>
+
+            {% endif %}
+
+        </div>
+
+
+        {% elif resume %}
+
+        <!-- =================================
+             NO TEXT
+        ================================== -->
+
+        <div class="resume-section">
+
+            <p class="empty-message">
+                No text could be extracted from this file.
+            </p>
+
+        </div>
+
+        {% endif %}
+
+    </div>
+
+</div>
+
+{% endblock %}

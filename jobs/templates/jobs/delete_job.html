@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Job Description | SkillForge</title>
+
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+        }
+
+        .card {
+            width: 420px;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+            text-align: center;
+        }
+
+        h1 { color: #111827; margin-bottom: 12px; }
+        p { color: #6b7280; margin-bottom: 25px; line-height: 1.5; }
+        p strong { color: #111827; }
+
+        .actions { display: flex; gap: 12px; }
+
+        .btn {
+            flex: 1;
+            padding: 13px;
+            border: none;
+            border-radius: 7px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            text-decoration: none;
+        }
+
+        .confirm-btn { background: #dc2626; color: white; }
+        .confirm-btn:hover { background: #b91c1c; }
+
+        .cancel-btn {
+            background: #f3f4f6;
+            color: #374151;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .cancel-btn:hover { background: #e5e7eb; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h1>Delete Job Description?</h1>
+    <p>Are you sure you want to delete <strong>{{ job.job_title }}</strong>? This cannot be undone.</p>
+
+    <div class="actions">
+        <a href="{% url 'jobs:job_detail' job.id %}" class="btn cancel-btn">Cancel</a>
+        <form method="POST" style="flex: 1;">
+            {% csrf_token %}
+            <button type="submit" class="btn confirm-btn" style="width: 100%;">Delete</button>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

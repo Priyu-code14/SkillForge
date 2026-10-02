@@ -1,0 +1,241 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Skills | SkillForge
+{% endblock %}
+
+{% block content %}
+
+<style>
+    .skills-page {
+        width: 100%;
+    }
+
+    .skills-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+
+    .skills-header h1 {
+        color: #111827;
+        margin: 0;
+        font-size: 36px;
+    }
+
+    .skills-subtitle {
+        color: #6b7280;
+        margin-top: 8px;
+        font-size: 16px;
+    }
+
+    .add-btn {
+        background: #4f46e5;
+        color: white;
+        text-decoration: none;
+        padding: 13px 20px;
+        border-radius: 8px;
+        font-weight: bold;
+        white-space: nowrap;
+        transition: 0.2s ease;
+    }
+
+    .add-btn:hover {
+        background: #4338ca;
+    }
+
+    .skill-card {
+        background: white;
+        padding: 25px;
+        margin-bottom: 18px;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+    }
+
+    .skill-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 15px;
+        margin-bottom: 12px;
+    }
+
+    .skill-name {
+        font-size: 20px;
+        font-weight: bold;
+        color: #111827;
+    }
+
+    .level {
+        color: #4f46e5;
+        font-weight: bold;
+        white-space: nowrap;
+    }
+
+    .progress {
+        width: 100%;
+        height: 10px;
+        background: #e5e7eb;
+        border-radius: 10px;
+        overflow: hidden;
+    }
+
+    .progress-bar {
+        height: 100%;
+        background: #4f46e5;
+        border-radius: 10px;
+    }
+
+    .score {
+        margin-top: 8px;
+        color: #6b7280;
+        font-size: 14px;
+    }
+
+    .empty {
+        background: white;
+        padding: 50px 25px;
+        text-align: center;
+        border-radius: 12px;
+        color: #6b7280;
+    }
+
+    .empty h2 {
+        color: #111827;
+        margin-bottom: 10px;
+    }
+
+    /* =========================
+       TABLET
+    ========================= */
+
+    @media (max-width: 768px) {
+
+        .skills-header {
+            align-items: flex-start;
+            flex-direction: column;
+        }
+
+        .skills-header h1 {
+            font-size: 30px;
+        }
+
+        .add-btn {
+            width: 100%;
+            text-align: center;
+        }
+
+        .skill-card {
+            padding: 20px;
+        }
+    }
+
+    /* =========================
+       MOBILE
+    ========================= */
+
+    @media (max-width: 480px) {
+
+        .skills-header h1 {
+            font-size: 26px;
+        }
+
+        .skills-subtitle {
+            font-size: 14px;
+        }
+
+        .skill-card {
+            padding: 18px;
+        }
+
+        .skill-top {
+            flex-direction: column;
+            align-items: flex-start;
+        }
+
+        .skill-name {
+            font-size: 18px;
+        }
+
+        .level {
+            font-size: 14px;
+        }
+    }
+</style>
+
+
+<div class="skills-page">
+
+    <div class="skills-header">
+
+        <div>
+            <h1>My Skills</h1>
+
+            <p class="skills-subtitle">
+                Track and improve your technical skills.
+            </p>
+        </div>
+
+        <a href="{% url 'skills:add_skill' %}" class="add-btn">
+            + Add Skill
+        </a>
+
+    </div>
+
+
+    {% if user_skills %}
+
+        {% for user_skill in user_skills %}
+
+            <div class="skill-card">
+
+                <div class="skill-top">
+
+                    <span class="skill-name">
+                        {{ user_skill.skill.name }}
+                    </span>
+
+                    <span class="level">
+                        {{ user_skill.level }}
+                    </span>
+
+                </div>
+
+
+                <div class="progress">
+
+                    <div
+                        class="progress-bar"
+                        style="width: {{ user_skill.score|default:0 }}%;">
+                    </div>
+
+                </div>
+
+
+                <div class="score">
+                    Score: {{ user_skill.score }}%
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+
+            <h2>No skills added yet</h2>
+
+            <p>
+                Add your first skill to start tracking your progress.
+            </p>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

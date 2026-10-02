@@ -1,0 +1,189 @@
+{% extends "base.html" %}
+
+{% block title %}Roadmap | SkillForge{% endblock %}
+
+{% block extra_css %}
+
+<style>
+
+    .roadmap-home {
+        width: 100%;
+        max-width: 1000px;
+        margin: 50px auto;
+    }
+
+    .roadmap-header {
+        margin-bottom: 30px;
+    }
+
+    .roadmap-header h1 {
+        color: #111827;
+        font-size: 36px;
+        margin-bottom: 8px;
+    }
+
+    .roadmap-subtitle {
+        color: #6b7280;
+        font-size: 16px;
+    }
+
+    .job-card {
+        display: block;
+        background: white;
+        padding: 25px;
+        margin-bottom: 18px;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+        text-decoration: none;
+        color: inherit;
+        transition: 0.2s ease;
+    }
+
+    .job-card:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+    }
+
+    .job-title {
+        font-size: 19px;
+        font-weight: bold;
+        color: #111827;
+        margin-bottom: 6px;
+    }
+
+    .job-date {
+        color: #9ca3af;
+        font-size: 13px;
+        margin-bottom: 15px;
+    }
+
+    .roadmap-link {
+        color: #4f46e5;
+        font-size: 14px;
+        font-weight: bold;
+    }
+
+    .empty {
+        background: white;
+        padding: 50px 30px;
+        text-align: center;
+        border-radius: 12px;
+        box-shadow: 0 5px 20px rgba(0,0,0,0.06);
+    }
+
+    .empty h2 {
+        color: #111827;
+        margin-bottom: 10px;
+    }
+
+    .empty p {
+        color: #6b7280;
+        margin-bottom: 20px;
+    }
+
+    .job-btn {
+        display: inline-block;
+        background: #4f46e5;
+        color: white;
+        text-decoration: none;
+        padding: 11px 18px;
+        border-radius: 7px;
+        font-weight: bold;
+        font-size: 14px;
+    }
+
+    @media (max-width: 900px) {
+        .roadmap-home {
+            width: 92%;
+            margin: 35px auto;
+        }
+    }
+
+    @media (max-width: 600px) {
+        .roadmap-home {
+            width: 94%;
+            margin: 25px auto;
+        }
+
+        .roadmap-header h1 {
+            font-size: 28px;
+        }
+
+        .roadmap-subtitle {
+            font-size: 14px;
+        }
+
+        .job-card {
+            padding: 20px;
+        }
+    }
+
+</style>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="roadmap-home">
+
+    <div class="roadmap-header">
+
+        <h1>Career Roadmap</h1>
+
+        <p class="roadmap-subtitle">
+            Choose a job analysis to view and track your preparation roadmap.
+        </p>
+
+    </div>
+
+
+    {% if jobs %}
+
+        {% for job in jobs %}
+
+            <a
+                href="{% url 'roadmap:roadmap_detail' job.id %}"
+                class="job-card"
+            >
+
+                <div class="job-title">
+                    {{ job.job_title }}
+                </div>
+
+                <div class="job-date">
+                    Added {{ job.created_at|date:"M d, Y" }}
+                </div>
+
+                <div class="roadmap-link">
+                    View Roadmap →
+                </div>
+
+            </a>
+
+        {% endfor %}
+
+    {% else %}
+
+        <div class="empty">
+
+            <h2>No job analyses yet</h2>
+
+            <p>
+                Add a job description first to create your career roadmap.
+            </p>
+
+            <a
+                href="{% url 'jobs:add_job' %}"
+                class="job-btn"
+            >
+                + Add Job Description
+            </a>
+
+        </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

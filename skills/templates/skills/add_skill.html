@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Add Skill | SkillForge</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: Arial, sans-serif;
+            background: #f5f7fb;
+        }
+
+        .card {
+            width: 420px;
+            padding: 40px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+        }
+
+        h1 {
+            text-align: center;
+            color: #111827;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #6b7280;
+            margin-bottom: 30px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #374151;
+        }
+
+        select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d1d5db;
+            border-radius: 7px;
+            font-size: 15px;
+            background: white;
+        }
+
+        select:focus {
+            outline: none;
+            border-color: #4f46e5;
+        }
+
+        .btn {
+            width: 100%;
+            padding: 13px;
+            border: none;
+            border-radius: 7px;
+            background: #4f46e5;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background: #4338ca;
+        }
+
+        .back {
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+            color: #4f46e5;
+            text-decoration: none;
+            font-weight: bold;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="card">
+
+    <h1>Add Skill</h1>
+
+    <p class="subtitle">
+        Add a skill to track your progress.
+    </p>
+
+    <form method="POST">
+
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="skill">Skill</label>
+
+            <select name="skill" id="skill" required>
+
+                <option value="">Select a skill</option>
+
+                {% for skill in skills %}
+                    <option value="{{ skill.id }}">
+                        {{ skill.name }}
+                    </option>
+                {% endfor %}
+
+            </select>
+        </div>
+
+
+        <div class="form-group">
+            <label for="level">Current Level</label>
+
+            <select name="level" id="level" required>
+
+                <option value="">Select your level</option>
+                <option value="Beginner">Beginner</option>
+                <option value="Intermediate">Intermediate</option>
+                <option value="Advanced">Advanced</option>
+
+            </select>
+        </div>
+
+
+        <button type="submit" class="btn">
+            Save Skill
+        </button>
+
+    </form>
+
+
+    <a href="{% url 'skills:skill_list' %}" class="back">
+        ← Back to My Skills
+    </a>
+
+</div>
+
+</body>
+</html>
