@@ -14,8 +14,13 @@ from pathlib import Path
 import os
 from dotenv import load_dotenv
 
-# Build paths inside the project like this: BASE_DIR / 'subdir'.
+
+# ============================================================
+# BASE DIRECTORY
+# ============================================================
+
 BASE_DIR = Path(__file__).resolve().parent.parent
+
 
 # Load .env file for local development
 load_dotenv(BASE_DIR / ".env")
@@ -30,23 +35,23 @@ SECRET_KEY = os.environ.get(
     "django-insecure-local-dev-key-change-me"
 )
 
-DEBUG = os.environ.get("DEBUG", "True").lower() == "true"
+# Local development can use DEBUG=True from .env.
+# Railway production should set DEBUG=False.
+DEBUG = os.environ.get("DEBUG", "False").lower() == "true"
 
+
+# Allowed hosts
 ALLOWED_HOSTS = [
     "skillforge-production-71cc.up.railway.app",
     "localhost",
     "127.0.0.1",
 ]
 
+
+# Railway HTTPS trusted origin
 CSRF_TRUSTED_ORIGINS = [
     "https://skillforge-production-71cc.up.railway.app",
 ]
-
-# Add Render hostname automatically when deployed
-RENDER_EXTERNAL_HOSTNAME = os.environ.get("RENDER_EXTERNAL_HOSTNAME")
-
-if RENDER_EXTERNAL_HOSTNAME:
-    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 
 # ============================================================
@@ -80,7 +85,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
 
-    # WhiteNoise for serving static files in production
+    # WhiteNoise serves static files in production
     "whitenoise.middleware.WhiteNoiseMiddleware",
 
     "django.contrib.sessions.middleware.SessionMiddleware",
@@ -130,14 +135,51 @@ WSGI_APPLICATION = "config.wsgi.application"
 # DATABASE - MYSQL
 # ============================================================
 
+# Local development:
+#   DB_NAME
+#   DB_USER
+#   DB_PASSWORD
+#   DB_HOST
+#   DB_PORT
+#
+# Railway:
+#   MYSQLDATABASE
+#   MYSQLUSER
+#   MYSQLPASSWORD
+#   MYSQLHOST
+#   MYSQLPORT
+
+# Railway variables are preferred when available.
+# Otherwise, local DB_* variables are used.
+
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.mysql",
-        "NAME": os.environ.get("DB_NAME"),
-        "USER": os.environ.get("DB_USER"),
-        "PASSWORD": os.environ.get("DB_PASSWORD"),
-        "HOST": os.environ.get("DB_HOST", "localhost"),
-        "PORT": os.environ.get("DB_PORT", "3306"),
+
+        "NAME": os.environ.get(
+            "MYSQLDATABASE",
+            os.environ.get("DB_NAME")
+        ),
+
+        "USER": os.environ.get(
+            "MYSQLUSER",
+            os.environ.get("DB_USER")
+        ),
+
+        "PASSWORD": os.environ.get(
+            "MYSQLPASSWORD",
+            os.environ.get("DB_PASSWORD")
+        ),
+
+        "HOST": os.environ.get(
+            "MYSQLHOST",
+            os.environ.get("DB_HOST", "localhost")
+        ),
+
+        "PORT": os.environ.get(
+            "MYSQLPORT",
+            os.environ.get("DB_PORT", "3306")
+        ),
     }
 }
 
@@ -206,7 +248,17 @@ STATICFILES_STORAGE = (
 # ============================================================
 
 MEDIA_URL = "/media/"
+
 MEDIA_ROOT = BASE_DIR / "media"
+
+
+# ============================================================
+# AUTHENTICATION
+# ============================================================
+
+LOGIN_URL = "/accounts/login/"
+
+LOGIN_REDIRECT_URL = "/accounts/profile/"
 
 
 # ============================================================
